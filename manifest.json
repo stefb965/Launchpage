@@ -1,0 +1,34 @@
+{
+  "name": "__MSG_extName__",
+  "version": "1.1.7",
+  "manifest_version": 2,
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
+  "background": {
+    "page": "launcher.html"
+  },
+  "options_page": "prefs.html",
+  "incognito": "spanning",
+  "offline_enabled": true,
+  "chrome_url_overrides": {
+    "newtab": "launcher.html"
+  },
+  "permissions": [
+    "management",
+    "tabs",
+    "<all_urls>",
+    "storage",
+    "unlimitedStorage"
+  ],
+  "icons": {
+    "128": "skin/icon_128.png",
+    "48": "skin/icon_48.png",
+    "32": "skin/icon_32.png",
+    "16": "skin/icon_16.png"
+  },
+  "page_action": {
+    "default_icon": "skin/icon_19.png",
+    "default_title": "Add to Launchpage",
+    "default_popup": "add.html"
+  }
+}

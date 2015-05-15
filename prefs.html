@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html manifest="launchpage.appcache">
+  <head>
+    <meta charset="utf-8">
+    <title i18n-content="options">Options</title>
+    <link rel="stylesheet" href="skin/prefs/prefs.css" />
+    <link rel="stylesheet" href="skin/prefs/button.css" />
+    <link rel="stylesheet" href="skin/prefs/checkbox.css" />
+    <link rel="stylesheet" href="skin/prefs/chrome_shared.css" />
+    <link rel="stylesheet" href="skin/prefs/list.css" />
+    <link rel="stylesheet" href="skin/prefs/select.css" />
+    <link rel="stylesheet" href="skin/prefs/spinner.css" />
+    <link rel="stylesheet" href="skin/prefs/throbber.css" />
+    <link rel="stylesheet" href="skin/prefs/tree.css" />
+    <!--
+    <link rel="stylesheet" href="skin/prefs/prefs_new.css" />
+    <link rel="stylesheet" href="skin/prefs/chrome_shared2.css" />
+    <link rel="stylesheet" href="skin/prefs/widgets.css" />
+    -->
+    <!--<script src="options_bundle.js"></script>-->
+  </head>
+  <body>
+    <div id="overlay" class="overlay transparent" hidden>
+      <div id="alertOverlay" class="page" hidden="">
+      <h1 id="alertOverlayTitle"></h1>
+        <div class="content-area">
+          <div id="alertOverlayMessage"></div>
+        </div>
+        <div class="action-area">
+          <div class="button-strip">
+            <button id="alertOverlayCancel" type="reset"></button>
+            <button id="alertOverlayOk" type="submit"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="main-content">
+      <div id="navbar-container" role="navigation">
+        <h1 id="navbar-content-title" i18n-content="options"></h1>
+        <ul id="navbar" role="tablist">
+          <li id="searchPageNav" class="navbar-item" pagename="search"
+              tabindex="-1" role="search">
+            <input id="search-field" type="search" incremental=""
+                placeholder="Search options" role="search"
+                i18n-values="placeholder:optionsSearchField;">
+          </li>
+          <li id="generalPageNav" class="navbar-item navbar-item-selected"
+              pagename="general" tabindex="0" i18n-content="optionsBasics"
+              role="tab"></li>
+          <li id="helpPageNav" class="navbar-item"
+              pagename="help" tabindex="0" i18n-content="optionsHelp"
+              role="tab"></li>
+        </ul>
+      </div>
+      <div id="mainview" role="main">
+        <div id="mainview-content">
+          <div id="page-container">
+            <div id="generalPage" class="page" role="tabpanel">
+              <h1 i18n-content="optionsBasics"></h1>
+              <div class="displaytable">
+                <section id="backgroundSection">
+                  <h3 i18n-content="optionsBackground"></h3>
+                  <div>
+                    <input type="file" name="background-image"
+                        id="background-image" accept="image/*" />
+                    <grid id="backgrounds-grid" class="settings-list"
+                        role="listbox" tabindex="0"
+                        has-element-focus="hasElementFocus" role="listbox">
+                      <div role="listitem" class="deletable-item" lead="lead"
+                          selected="selected" id="bg-default" name="background"
+                          role="option" aria-selected="true">
+                        <div>
+                          <div id="bgDefault"></div>
+                        </div>
+                      </div>
+                    </grid>
+                    <label>
+                      <input type="checkbox" name="chameleon" id="chameleon"
+                          checked="true" />
+                      <span i18n-content="chameleonBackground" />
+                    </label>
+                  </div>
+                </section>
+                <section id="pageActionSection">
+                  <h3 i18n-content="optionsPageAction"></h3>
+                  <div>
+                    <label>
+                      <input type="checkbox" name="page-action" id="page-action"
+                          checked="checked" />
+                      <span i18n-content="usePageAction" />
+                    </label>
+                  </div>
+                </section>
+              </div>
+            </div>
+            <div id="helpPage" class="page" role="tabpanel">
+              <h1 i18n-content="optionsHelp"></h1>
+              <div class="displaytable">
+                <section id="getHelpSection">
+                  <h3 i18n-content="optionsGetHelp"></h3>
+                  <div>
+                    <button id="getHelpButton"
+                        i18n-content="optionsHelpButton"></button>
+                    <button id="reportProblemButton"
+                        i18n-content="optionsReportProblem"></button>
+                  </div>
+                </section>
+                <section id="aboutSection">
+                  <img id="aboutIcon">
+                  <div id="aboutInfo" role="contentinfo">
+                    <h3 i18n-content="extName"></h3>
+                    <div i18n-content="extDescription"></div>
+                    <br>
+                    <div id="version"></div>
+                    <div id="copyright"></div>
+                    <div id="contributors">
+                      <a href="contributors.html" target="_blank"
+                      i18n-content="contributors"></a>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="i18n.js"></script>
+  <script src="prefs.js"></script>
+  <script src="color-thief/js/libs/jquery-1.6.2.min.js"></script>
+  <script src="color-thief/js/libs/quantize.js"></script>
+  <script src="color-thief/js/color-thief.js"></script>
+</html>

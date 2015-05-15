@@ -1,0 +1,19 @@
+body {
+  background-color: #f1f1f1;
+  color: #333;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 24px;
+  text-shadow: white 0 1px 2px;
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+p {
+  margin-left: 24px;
+}
+
+p::first-letter {
+  font-weight: bold;
+}
