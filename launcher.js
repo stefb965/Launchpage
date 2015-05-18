@@ -79,7 +79,8 @@ function Icon(id, name, url) {
       });
 
   $(col).append(app);
-  return col[0];
+  // return col[0];
+  return app[0];
 }
 
 /**
@@ -228,8 +229,12 @@ function drawIcons() {
  *        True if the icon was appended successfully
  */
 function appendIcon(appObject) {
-  var app = new Icon(appObject.id, appObject.name,
-      appObject.appLaunchUrl);
+  //Prefer short name, but use long name if short name is not specified
+  var name = appObject.shortName;
+  if (!name) {
+    name = appObject.name;
+  }
+  var app = new Icon(appObject.id, name, appObject.appLaunchUrl);
   /*
   app.addEventListener("click", function(){
       event.preventDefault();
@@ -263,7 +268,7 @@ function appendIcon(appObject) {
         });
     }, false);
   }
-  icons.appendChild(app);
+  icons.appendChild(app.parentNode);
   return true;
 }
 
@@ -303,35 +308,12 @@ function getAppIndexById(id) {
 //if the app doesn't exist or if the argument is wrong.
   if (!id || typeof id != "string") return null;
   
-  var app = getAppById(id);
   for (var node = 0; node < apps.length; node++) {
     if (apps[node].id == id) {
       return node;
     }
   }
   return null;
-}
-
-/**
- * Returns the App objects that match the supplied name.
- *
- * @param name
- *        The name to look up
- *
- * @return
- *        An array of apps that match the name supplied, or null of the
- *        argument is wrong.
- */
-function getAppsByName(name) {
-  if (!name || typeof name != "string") return null;
-  
-  var appsByName = []
-  for (var node in apps) {
-    if (apps[node].name == name) {
-      appsByName.push(apps[node]);
-    }
-  }
-  return appsByName;
 }
 
 /**
@@ -433,273 +415,282 @@ function drawContextMenu(event) {
   destroyContextMenu();
   
   /*************************************
-   * Determine the target element"s type
+   * Determine the target element's type
    *************************************/
   var node = event.target;
   var cancelDrawing = false; //Flag to cancel drawing the context menu
   if (document.getElementById("context-menu")) { //If a context menu exists
     if (node.id == "context-menu" || node.id == "arrow" ||
-        node.id == "arrow-overlay") { //If the target IS the context menu
+        node.id == "arrow-overlay") { //If the target is the context menu itself
       cancelDrawing = true;
     }
+
     while (!node.id && node != document) {
-    //Climb up the DOM tree until the node has an ID OR the node is the root
+      //Climb up the DOM tree until the node has an ID or the node is the root
       node = node.parentNode;
     }
+
     if (node.id == "context-menu" || node.id == "arrow" ||
         node.id == "arrow-overlay") { //If the target is in the context menu
       cancelDrawing = true;
     }
   }
+
   while (!node.className && node != document) {
-  //Climb up the DOM tree until the node has a class OR the node is the root
+    //Climb up the DOM tree until the node has a class or the node is the root
     node = node.parentNode;
   }
-  if (node.className == "modal-bg" || node.className == "modalDialog") {
-  //If the node is a modal dialog
+
+  if (node.className.substring(0, 5) == "modal" ||
+      node.className.substring(0, 3) == "btn") {
     cancelDrawing = true;
   }
-  if (cancelDrawing == false) {
-    var contextMenu = document.createElement("menu");
-    contextMenu.id = "context-menu";
-    contextMenu.type = "context";
-    contextMenu.setAttribute("role", "menu");
-    var arrow = document.createElement("div");
-    arrow.id = "arrow";
-    contextMenu.appendChild(arrow);
-    
-    /****************
-     * Build the menu
-     ****************/
-    switch (node.className) {
-      case "icon": //If the node is an icon
-        var iconLi = document.createElement("li");
-        iconLi.setAttribute("role", "menuitem");
-        var iconA = document.createElement("a");
-        iconA.appendChild(document.createTextNode(node.innerText));
-        iconA.style.fontWeight = "bold";
-        iconA.href = node.href;
-        if (iconA.href.substring(0, 17) == "chrome://settings") {
-          iconA.addEventListener("click", function() {
-            chrome.tabs.update({url:"chrome://settings"});
-          }, false);
-        }
-        var optionsLi = document.createElement("li");
-        optionsLi.setAttribute("role", "menuitem");
-        var optionsA = document.createElement("a");
-        optionsA.appendChild(document.createTextNode(
-            chrome.i18n.getMessage("options")));
-        var app = getAppById(node.id);
-        if (app.optionsUrl) {
-          optionsA.href = app.optionsUrl;
-        } else {
-          optionsLi.className = "disabled";
-        }
-        var removeLi = document.createElement("li");
-        removeLi.setAttribute("role", "menuitem");
-        var removeA = document.createElement("a");
-        if (app.type == appTypes.hostedApp ||
-            app.type == appTypes.packagedApp ||
-            app.type == appTypes.legacyPackagedApp) {
-          removeA.appendChild(document.createTextNode(
-              chrome.i18n.getMessage("remove", appName)));
-        } else {
-          removeA.appendChild(document.createTextNode(
-              chrome.i18n.getMessage("removeWebClip")));
-        }
-        if (app.mayDisable == true) {
-          removeA.href = "#";
-          removeA.addEventListener("click", function(){
-              document.body.removeChild(
-                  document.getElementById("context-menu"));
-              if (app.type == appTypes.hostedApp ||
-                  app.type == appTypes.packagedApp ||
-                  app.type == appTypes.legacyPackagedApp) {
-                prompt(
-                    chrome.i18n.getMessage("uninstallPageTitle"),
-                    chrome.i18n.getMessage("uninstallApp", app.name),
-                    function() {
-                      chrome.management.uninstall(
-                          app.id,
-                          window.location.reload());
-                    },
-                    chrome.i18n.getMessage("buttonUninstall"),
-                    node.childNodes[0].src);
-              } else {
-                prompt(
-                    chrome.i18n.getMessage("removePageTitle"),
-                    chrome.i18n.getMessage("removeWebClipMessage", app.name),
-                    function() {
-                      var index = getAppIndexById(app.id);
-                      apps.splice(index, 1);
-                      localStorage["apps"] = JSON.stringify(apps);
-                      window.location.reload();
-                    },
-                    chrome.i18n.getMessage("buttonRemove"),
-                    node.childNodes[0].src);
-              }
-            }, false);
-        } else {
-          removeLi.className = "disabled";
-        }
-        
-        iconLi.appendChild(iconA);
-        optionsLi.appendChild(optionsA);
-        removeLi.appendChild(removeA);
-        contextMenu.appendChild(iconLi);
-        if (removeLi.className != "disabled") {
-          contextMenu.appendChild(document.createElement("hr"));
-          contextMenu.childNodes[2].setAttribute("role", "separator");
-        }
-        if (optionsLi.className != "disabled") {
-          contextMenu.appendChild(optionsLi);
-        }
-        if (removeLi.className != "disabled") {
-          contextMenu.appendChild(removeLi);
-        }
-        
-        break;
-        
-      default: //If the node isn't any of the above (e.g. the root element)
-        var launchpageLi = document.createElement("li");
-        var launchpageA = document.createElement("a");
-        launchpageA.appendChild(document.createTextNode(
-            chrome.i18n.getMessage("extName")));
-        launchpageA.style.fontWeight = "bold";
-        launchpageLi.setAttribute("role", "menuitem");
-        if (launchpageInfo.homepageUrl) {
-          launchpageA.href = launchpageInfo.homepageUrl;
-        } else {
-          launchpageLi.className = "disabled";
-        }
-        var prefsLi = document.createElement("li");
-        prefsLi.setAttribute("role", "menuitem");
-        var prefsA = document.createElement("a");
-        prefsA.appendChild(document.createTextNode(
-            chrome.i18n.getMessage("options")));
-        prefsA.href = "prefs.html";
-        
-        var manageLi = document.createElement("li");
-        manageLi.setAttribute("role", "menuitem");
-        var manageA = document.createElement("a");
-        manageA.appendChild(document.createTextNode(
-            chrome.i18n.getMessage("manageExtensions")));
-        manageA.href = "chrome://extensions";
-        manageA.addEventListener("click", function() {
-          chrome.tabs.update({url:"chrome://extensions"});
+
+  if (cancelDrawing) {
+    return false;
+  }
+
+  var contextMenu = document.createElement("menu");
+  contextMenu.id = "context-menu";
+  contextMenu.type = "context";
+  contextMenu.setAttribute("role", "menu");
+  var arrow = document.createElement("div");
+  arrow.id = "arrow";
+  contextMenu.appendChild(arrow);
+  
+  /****************
+   * Build the menu
+   ****************/
+  switch (node.className) {
+    case "icon": //If the node is an icon
+      var iconLi = document.createElement("li");
+      iconLi.setAttribute("role", "menuitem");
+      var iconA = document.createElement("a");
+      iconA.appendChild(document.createTextNode(node.innerText));
+      iconA.style.fontWeight = "bold";
+      iconA.href = node.href;
+      if (iconA.href.substring(0, 17) == "chrome://settings") {
+        iconA.addEventListener("click", function() {
+          chrome.tabs.update({url:"chrome://settings"});
         }, false);
-        
-        launchpageLi.appendChild(launchpageA);
-        prefsLi.appendChild(prefsA);
-        manageLi.appendChild(manageA);
-        contextMenu.appendChild(launchpageLi);
+      }
+      var optionsLi = document.createElement("li");
+      optionsLi.setAttribute("role", "menuitem");
+      var optionsA = document.createElement("a");
+      optionsA.appendChild(document.createTextNode(
+          chrome.i18n.getMessage("options")));
+      var app = getAppById(node.id);
+      if (app.optionsUrl) {
+        optionsA.href = app.optionsUrl;
+      } else {
+        optionsLi.className = "disabled";
+      }
+      var removeLi = document.createElement("li");
+      removeLi.setAttribute("role", "menuitem");
+      var removeA = document.createElement("a");
+      if (app.type == appTypes.hostedApp ||
+          app.type == appTypes.packagedApp ||
+          app.type == appTypes.legacyPackagedApp) {
+        removeA.appendChild(document.createTextNode(
+            chrome.i18n.getMessage("remove", appName)));
+      } else {
+        removeA.appendChild(document.createTextNode(
+            chrome.i18n.getMessage("removeWebClip")));
+      }
+      if (app.mayDisable == true) {
+        removeA.href = "#";
+        removeA.addEventListener("click", function(){
+            document.body.removeChild(
+                document.getElementById("context-menu"));
+            if (app.type == appTypes.hostedApp ||
+                app.type == appTypes.packagedApp ||
+                app.type == appTypes.legacyPackagedApp) {
+              prompt(
+                  chrome.i18n.getMessage("uninstallPageTitle"),
+                  chrome.i18n.getMessage("uninstallApp", app.name),
+                  function() {
+                    chrome.management.uninstall(
+                        app.id,
+                        window.location.reload());
+                  },
+                  chrome.i18n.getMessage("buttonUninstall"),
+                  node.childNodes[0].src);
+            } else {
+              prompt(
+                  chrome.i18n.getMessage("removePageTitle"),
+                  chrome.i18n.getMessage("removeWebClipMessage", app.name),
+                  function() {
+                    var index = getAppIndexById(app.id);
+                    apps.splice(index, 1);
+                    localStorage["apps"] = JSON.stringify(apps);
+                    window.location.reload();
+                  },
+                  chrome.i18n.getMessage("buttonRemove"),
+                  node.childNodes[0].src);
+            }
+          }, false);
+      } else {
+        removeLi.className = "disabled";
+      }
+      
+      iconLi.appendChild(iconA);
+      optionsLi.appendChild(optionsA);
+      removeLi.appendChild(removeA);
+      contextMenu.appendChild(iconLi);
+      if (removeLi.className != "disabled") {
         contextMenu.appendChild(document.createElement("hr"));
         contextMenu.childNodes[2].setAttribute("role", "separator");
-        contextMenu.appendChild(prefsLi);
-        contextMenu.appendChild(manageLi);
-        break;
-    }
-    
-    //Enables the context menu to have its style calculated - necessary for
-    //position calculations
-    contextMenu.style.display = "block";
-    document.body.appendChild(contextMenu);
-    
-    /*********************************************
-     * Context menu & triangle metrics - calculate
-     * position to display menu & arrow
-     *********************************************/
-    switch (node.className) {
-      case "icon":
-      //if the target is an icon, display the context menu below the icon
+      }
+      if (optionsLi.className != "disabled") {
+        contextMenu.appendChild(optionsLi);
+      }
+      if (removeLi.className != "disabled") {
+        contextMenu.appendChild(removeLi);
+      }
 
-        node.focus(); //Set the focus to the icon as visual feedback
+      break;
       
-        //Make the arrow display on top of the context menu
-        arrow.className = "top";
+    default: //If the node isn't any of the above (e.g. the root element)
+      var launchpageLi = document.createElement("li");
+      var launchpageA = document.createElement("a");
+      launchpageA.appendChild(document.createTextNode(
+          chrome.i18n.getMessage("extName")));
+      launchpageA.style.fontWeight = "bold";
+      launchpageLi.setAttribute("role", "menuitem");
+      if (launchpageInfo.homepageUrl) {
+        launchpageA.href = launchpageInfo.homepageUrl;
+      } else {
+        launchpageLi.className = "disabled";
+      }
+      var prefsLi = document.createElement("li");
+      prefsLi.setAttribute("role", "menuitem");
+      var prefsA = document.createElement("a");
+      prefsA.appendChild(document.createTextNode(
+          chrome.i18n.getMessage("options")));
+      prefsA.href = "prefs.html";
       
-        //Center the context menu horizontally on the icon
-        contextMenu.style.left = node.offsetLeft +
-            (parseInt(getComputedStyle(node)["width"]) +
-             parseInt(getComputedStyle(node)["padding-left"]) +
-             parseInt(getComputedStyle(node)["padding-right"]) -
-             parseInt(getComputedStyle(contextMenu)["width"]))/2 + "px";
-            
-        //Position the context menu below the icon
-        contextMenu.style.top = node.offsetTop -
-            parseInt(getComputedStyle(arrow)["top"]) +
-            parseInt(getComputedStyle(node)["height"]) +
-            parseInt(getComputedStyle(node)["padding-top"]) +
-            parseInt(getComputedStyle(node)["padding-bottom"]) + "px";
-        
-        //Center the arrow horizontally on the menu
-        arrow.style.left =
-            (parseInt(getComputedStyle(contextMenu)["width"]) +
-             parseInt(getComputedStyle(contextMenu)["padding-left"]) +
-             parseInt(getComputedStyle(contextMenu)["padding-right"]))/2 +
-            parseInt(getComputedStyle(arrow)["top"]) + "px";
-        
-        if (parseInt(contextMenu.style.top) +
-            parseInt(getComputedStyle(contextMenu)["padding-top"]) +
-            parseInt(getComputedStyle(contextMenu)["padding-bottom"]) +
-            parseInt(getComputedStyle(contextMenu)["height"]) -
-            document.body.scrollTop > window.innerHeight) {
-            //if the context menu overflows the viewport vertically
-            
-              arrow.className = "bottom"; //Make the arrow show below the menu
+      var manageLi = document.createElement("li");
+      manageLi.setAttribute("role", "menuitem");
+      var manageA = document.createElement("a");
+      manageA.appendChild(document.createTextNode(
+          chrome.i18n.getMessage("manageExtensions")));
+      manageA.href = "chrome://extensions";
+      manageA.addEventListener("click", function() {
+        chrome.tabs.update({url:"chrome://extensions"});
+      }, false);
+      
+      launchpageLi.appendChild(launchpageA);
+      prefsLi.appendChild(prefsA);
+      manageLi.appendChild(manageA);
+      contextMenu.appendChild(launchpageLi);
+      contextMenu.appendChild(document.createElement("hr"));
+      contextMenu.childNodes[2].setAttribute("role", "separator");
+      contextMenu.appendChild(prefsLi);
+      contextMenu.appendChild(manageLi);
+
+      break;
+  }
+  
+  //Enables the context menu to have its style calculated - necessary for
+  //position calculations
+  contextMenu.style.display = "block";
+  document.body.appendChild(contextMenu);
+  
+  /*********************************************
+   * Context menu & triangle metrics - calculate
+   * position to display menu & arrow
+   *********************************************/
+  switch (node.className) {
+    case "icon":
+    //if the target is an icon, display the context menu below the icon
+
+      node.focus(); //Set the focus to the icon as visual feedback
+    
+      //Make the arrow display on top of the context menu
+      arrow.className = "top";
+    
+      //Center the context menu horizontally on the icon
+      contextMenu.style.left = node.offsetLeft +
+          (parseInt(getComputedStyle(node)["width"]) +
+           parseInt(getComputedStyle(node)["padding-left"]) +
+           parseInt(getComputedStyle(node)["padding-right"]) -
+           parseInt(getComputedStyle(contextMenu)["width"]))/2 + "px";
           
-              //Position the context menu above the icon
-              contextMenu.style.top = node.offsetTop +
-                  parseInt(getComputedStyle(arrow)["bottom"]) -
-                  parseInt(getComputedStyle(contextMenu)["height"]) -
-                  parseInt(getComputedStyle(contextMenu)["padding-top"]) -
-                  parseInt(getComputedStyle(contextMenu)["padding-bottom"]) +
-                  "px";
-          }
+      //Position the context menu below the icon
+      contextMenu.style.top = node.offsetTop -
+          parseInt(getComputedStyle(arrow)["top"]) +
+          parseInt(getComputedStyle(node)["height"]) +
+          parseInt(getComputedStyle(node)["padding-top"]) +
+          parseInt(getComputedStyle(node)["padding-bottom"]) + "px";
+      
+      //Center the arrow horizontally on the menu
+      arrow.style.left =
+          (parseInt(getComputedStyle(contextMenu)["width"]) +
+           parseInt(getComputedStyle(contextMenu)["padding-left"]) +
+           parseInt(getComputedStyle(contextMenu)["padding-right"]))/2 +
+          parseInt(getComputedStyle(arrow)["top"]) + "px";
+      
+      if (parseInt(contextMenu.style.top) +
+          parseInt(getComputedStyle(contextMenu)["padding-top"]) +
+          parseInt(getComputedStyle(contextMenu)["padding-bottom"]) +
+          parseInt(getComputedStyle(contextMenu)["height"]) -
+          document.body.scrollTop > window.innerHeight) {
+          //if the context menu overflows the viewport vertically
+          
+            arrow.className = "bottom"; //Make the arrow show below the menu
+        
+            //Position the context menu above the icon
+            contextMenu.style.top = node.offsetTop +
+                parseInt(getComputedStyle(arrow)["bottom"]) -
+                parseInt(getComputedStyle(contextMenu)["height"]) -
+                parseInt(getComputedStyle(contextMenu)["padding-top"]) -
+                parseInt(getComputedStyle(contextMenu)["padding-bottom"]) +
+                "px";
+        }
+
         break;
+    
+    default:
+    //if the target is not an icon, display the context menu with the arrow
+    //tip at the point clicked
+    
+      //Make the arrow display on the left side of the menu
+      arrow.className = "left";
+      //Center the arrow vertically on the first menu item
+      arrow.style.top =
+          (parseInt(getComputedStyle(
+               contextMenu.getElementsByTagName("li")[0])["height"]) +
+           2 * parseInt(getComputedStyle(arrow)["left"]) + 1)/2 +
+          parseInt(getComputedStyle(contextMenu)["padding-top"]) + "px";
       
-      default:
-      //if the target is not an icon, display the context menu with the arrow
-      //tip at the point clicked
-      
-        //Make the arrow display on the left side of the menu
-        arrow.className = "left";
+      contextMenu.style.left = event.pageX -
+          parseInt(getComputedStyle(arrow)["left"]) - 1 + "px";
+      contextMenu.style.top = event.pageY +
+          parseInt(getComputedStyle(arrow)["left"]) -
+          parseInt(getComputedStyle(arrow)["top"]) + "px";
+    
+      if (parseInt(getComputedStyle(contextMenu)["left"]) +
+          parseInt(getComputedStyle(contextMenu)["width"]) >
+          window.innerWidth) {
+        //If the menu overflows the window horizontally, make the arrow
+        //display on the right side of the menu
+        arrow.className = "right";
         //Center the arrow vertically on the first menu item
         arrow.style.top =
             (parseInt(getComputedStyle(
                  contextMenu.getElementsByTagName("li")[0])["height"]) +
-             2 * parseInt(getComputedStyle(arrow)["left"]) + 1)/2 +
+             2 * parseInt(getComputedStyle(arrow)["right"]) + 2)/2 +
             parseInt(getComputedStyle(contextMenu)["padding-top"]) + "px";
         
         contextMenu.style.left = event.pageX -
-            parseInt(getComputedStyle(arrow)["left"]) - 1 + "px";
+            parseInt(getComputedStyle(contextMenu)["width"]) +
+            parseInt(getComputedStyle(arrow)["right"]) + "px";
         contextMenu.style.top = event.pageY +
-            parseInt(getComputedStyle(arrow)["left"]) -
+            parseInt(getComputedStyle(arrow)["right"]) -
             parseInt(getComputedStyle(arrow)["top"]) + "px";
-      
-        if (parseInt(getComputedStyle(contextMenu)["left"]) +
-            parseInt(getComputedStyle(contextMenu)["width"]) >
-            window.innerWidth) {
-          //If the menu overflows the window horizontally, make the arrow
-          //display on the right side of the menu
-          arrow.className = "right";
-          //Center the arrow vertically on the first menu item
-          arrow.style.top =
-              (parseInt(getComputedStyle(
-                   contextMenu.getElementsByTagName("li")[0])["height"]) +
-               2 * parseInt(getComputedStyle(arrow)["right"]) + 2)/2 +
-              parseInt(getComputedStyle(contextMenu)["padding-top"]) + "px";
-          
-          contextMenu.style.left = event.pageX -
-              parseInt(getComputedStyle(contextMenu)["width"]) +
-              parseInt(getComputedStyle(arrow)["right"]) + "px";
-          contextMenu.style.top = event.pageY +
-              parseInt(getComputedStyle(arrow)["right"]) -
-              parseInt(getComputedStyle(arrow)["top"]) + "px";
-        }
-                  
+      }
+
       break;
-    }
   }
   return true;
 }
@@ -872,7 +863,7 @@ function errorHandler(e) {
 function addToHomeScreen(details) {
   //Builds an App object, then adds it to the list of apps. Used for web clips.
   if (isBackgroundPage) {
-  //Only add it if it"s the background page. Otherwise, if Launchpage is open
+  //Only add it if it's the background page. Otherwise, if Launchpage is open
   //somewhere else, it would fire multiple times.
     var app = new App(details.id, details.title, details.url);
     app.homepageUrl = details.url;
@@ -902,7 +893,7 @@ if (localStorage["page-action"] == "true") {
   chrome.tabs.onUpdated.addListener(checkUrl); //Listen for tab updates
 }
 
-//Draw Launchpage context menu instead of the browser"s
+//Draw Launchpage context menu instead of the browser's
 document.addEventListener("contextmenu", drawContextMenu, false);
 
 //Destroy the context menu when the user clicks anywhere outside of the menu
@@ -927,7 +918,7 @@ window.addEventListener("load", function(e) {
 
 chrome.extension.onMessage.addListener(function (msg, sender) {
   if (msg.to == "launcher.js" && msg.from == "add.js") {
-  //It"s being sent to the background page from the page action
+  //it's being sent to the background page from the page action
     addToHomeScreen(msg.message); //Add the icon to the home screen
   } else if (msg.to == "launcher.js" &&
       msg.from == "chrome-webstore-item_finder.js") {

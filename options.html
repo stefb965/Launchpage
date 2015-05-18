@@ -4,39 +4,46 @@
   <head>
     <meta charset="utf-8">
     <title i18n-content="options">Options</title>
+    <link rel="stylesheet" href="lib/bootstrap-paper/bootstrap.min.css">
+    <link rel="stylesheet" href="skin/options.css" />
   </head>
 
   <body>
 
     <!-- Background -->
-    <h3 i18n-content="optionsBackground"></h3>
+    <h5 i18n-content="optionsBackground"></h5>
     <div>
       <input type="file" name="background-image"
           id="background-image" accept="image/*" />
     </div>
     <div>
-      <label>
-        <input type="checkbox" name="chameleon" id="chameleon"
-            checked="true" />
-        <span i18n-content="chameleonBackground" />
-      </label>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="chameleon" id="chameleon"
+              checked="true" />
+          <span i18n-content="chameleonBackground" />
+        </label>
+      </div>
     </div>
 
 
     <!-- Page Action -->
-    <h3 i18n-content="optionsPageAction"></h3>
+    <h5 i18n-content="optionsPageAction"></h5>
     <div>
-      <label>
-        <input type="checkbox" name="page-action" id="page-action"
-            checked="checked" />
-        <span i18n-content="usePageAction" />
-      </label>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="page-action" id="page-action"
+              checked="checked" />
+          <span i18n-content="usePageAction" />
+        </label>
+      </div>
     </div>
 
   </body>
 
   <script src="lib/color-thief.min.js"></script>
   <script src="lib/jquery-2.1.4.min.js"></script>
+  <script src="lib/bootstrap-3.3.4/js/bootstrap.min.js"></script>
   <script src="i18n.js"></script>
   <script src="options.js"></script>
 </html>
