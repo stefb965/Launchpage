@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title i18n-content="options">Options</title>
+  </head>
+
+  <body>
+
+    <!-- Background -->
+    <h3 i18n-content="optionsBackground"></h3>
+    <div>
+      <input type="file" name="background-image"
+          id="background-image" accept="image/*" />
+    </div>
+    <div>
+      <label>
+        <input type="checkbox" name="chameleon" id="chameleon"
+            checked="true" />
+        <span i18n-content="chameleonBackground" />
+      </label>
+    </div>
+
+
+    <!-- Page Action -->
+    <h3 i18n-content="optionsPageAction"></h3>
+    <div>
+      <label>
+        <input type="checkbox" name="page-action" id="page-action"
+            checked="checked" />
+        <span i18n-content="usePageAction" />
+      </label>
+    </div>
+
+  </body>
+
+  <script src="lib/color-thief.min.js"></script>
+  <script src="lib/jquery-2.1.4.min.js"></script>
+  <script src="i18n.js"></script>
+  <script src="options.js"></script>
+</html>

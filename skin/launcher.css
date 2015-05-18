@@ -8,54 +8,45 @@ body {
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-  font: 10pt normal 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+  font: 10pt normal Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 4%;
-}
-
-#infobar {
-  background: -webkit-linear-gradient(#ddd, #bbb);
-  -webkit-box-shadow: 0 0 10px #444;
-  left: 0;
-  padding: 1em 16px;
-  position: fixed;
-  top: 0;
-  width: 100%;
 }
 
 a {
   outline: none;
 }
 
-.icon {
-  border-radius: 10px;
-  float: left;
-  margin: 3%;
+.icon-col {
   padding: 2%;
+}
+
+.icon {
+  display: block;
+  border-radius: 10px;
+  padding: 15%;
   text-decoration: none;
   -webkit-transition-duration: 150ms, 250ms;
   -webkit-transition-property: background, opacity;
   -webkit-transition-timing-function: linear;
   -webkit-user-drag: element;
-  width: 10%;
+  /*width: 10%;*/
+  cursor: pointer;
 }
 
 .icon:hover, .icon:focus, .icon.hover {
   background: rgba(0, 0, 0, 0.35);
+  text-decoration: none;
 }
 
-.icon * {
-  cursor: pointer;
-}
-
-.icon > img {
+.icon img {
   display: block;
   height: auto;
   margin: 0 auto;
   width: 75%;
 }
 
-.icon > label {
+.icon span {
   color: #fff;
   display: block;
   line-height: 2em;
@@ -73,6 +64,10 @@ a {
   font-size: 1.3em;
   position: absolute;
   width: 13%;
+}
+
+#modal-icon {
+  margin-right: 10px;
 }
 
 #context-menu {

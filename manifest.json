@@ -1,13 +1,18 @@
 {
   "name": "__MSG_extName__",
-  "version": "1.1.7",
+  "version": "2.0",
   "manifest_version": 2,
   "description": "__MSG_extDescription__",
+  "author": "Alex Cordonnier",
   "default_locale": "en",
   "background": {
     "page": "launcher.html"
   },
-  "options_page": "prefs.html",
+  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
   "incognito": "spanning",
   "offline_enabled": true,
   "chrome_url_overrides": {
