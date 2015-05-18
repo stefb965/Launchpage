@@ -34,7 +34,19 @@ var appTypes = {
   stockApp: "stock_app"
 };
 
-//Icon element constructor
+/**
+ * Constructs an Icon element.
+ *
+ * @param id
+ *        The addon ID of the app
+ * @param name
+ *        The name of the app
+ * @param url
+ *        The URL that the icon opens
+ *
+ * @return
+ *        A newly constructed HTML object that contains the app icon
+ */
 function Icon(id, name, url) {
   var col = $("<div class='icon-col col-xs-4 col-sm-3 col-md-2'></div>");
   var app = $("<a href='url' class='icon' role='link'></a>")
@@ -70,7 +82,19 @@ function Icon(id, name, url) {
   return col[0];
 }
 
-//App object constructor
+/**
+ * Constructs an App object.
+ *
+ * @param id
+ *        The addon ID of the app
+ * @param name
+ *        The name of the app
+ * @param url
+ *        The URL that the icon opens
+ *
+ * @return
+ *        A newly constructed App object
+ */
 function App(id, name, url) {
   return {
     appLaunchUrl: url,
@@ -97,8 +121,17 @@ function App(id, name, url) {
  * Extension functions
  ******************************************************************************/
 
+/**
+ * Filters a list of all installed addons to only those that will be shown.
+ *
+ * @param addons
+ *        The list of all installed addons
+ *
+ * @return
+ *        A list of addons to be displayed: enabled apps, the stock icons,
+ *        and web clips.
+ */
 function getApps(addons) {
-//Filter out the apps from the other addons, and add prefs & store icons
   for (var i in addons) {
     if (addons[i].type == appTypes.hostedApp ||
         addons[i].type == appTypes.packagedApp ||
@@ -147,8 +180,10 @@ function getApps(addons) {
   }
 }
 
+/**
+ * Looks for new apps and appends them to the array.
+ */
 function checkNewApps() {
-//Check for new apps installed & position them at the end of the list.
   if (!localStorage["apps"]) {
     localStorage["apps"] = JSON.stringify(apps);
   } else {
@@ -171,7 +206,10 @@ function checkNewApps() {
   localStorage["apps"] = JSON.stringify(apps);
 }
 
-function drawIcons() { //Draws icons to the page
+/**
+ * Emtpies and repopulates the launcher.
+ */
+function drawIcons() {
   icons.innerHTML = ""; //Clear out the icons
   for (var i = 0; i < apps.length; i++) {
     if (apps[i].enabled) { //If the app is enabled
@@ -180,9 +218,16 @@ function drawIcons() { //Draws icons to the page
   }
 }
 
+/**
+ * Appends an icon representing the App to the launcher.
+ *
+ * @param appObject
+ *        The object representing the App's configuration
+ *
+ * @return
+ *        True if the icon was appended successfully
+ */
 function appendIcon(appObject) {
-//Constructs the app object as an icon and appends it to the launcher.
-//Returns true upon success.
   var app = new Icon(appObject.id, appObject.name,
       appObject.appLaunchUrl);
   /*
@@ -222,9 +267,17 @@ function appendIcon(appObject) {
   return true;
 }
 
+/**
+ * Returns the App object that matches the supplied ID.
+ *
+ * @param id
+ *        The ID to look up
+ *
+ * @return
+ *        An App object matching the ID, or null if the ID is wrong or the
+ *        app doesn't exist.
+ */
 function getAppById(id) {
-//Returns an appObject that matches the id supplied. Returns null if the app
-//doesn't exist or if the argument is wrong.
   if (!id || typeof id != "string") return null;
   
   for (var node in apps) {
@@ -235,6 +288,16 @@ function getAppById(id) {
   return null;
 }
 
+/**
+ * Returns the index of the App that matches the supplied ID.
+ *
+ * @param id
+ *        The ID to look up
+ *
+ * @return
+ *        The index of the App object matching the ID, or null if the ID is
+ *        wrong or the app doesn't exist.
+ */
 function getAppIndexById(id) {
 //Returns the index number of the app that matches the id supplied. Returns null
 //if the app doesn't exist or if the argument is wrong.
@@ -249,9 +312,17 @@ function getAppIndexById(id) {
   return null;
 }
 
+/**
+ * Returns the App objects that match the supplied name.
+ *
+ * @param name
+ *        The name to look up
+ *
+ * @return
+ *        An array of apps that match the name supplied, or null of the
+ *        argument is wrong.
+ */
 function getAppsByName(name) {
-//Returns an array of appObjects that match the name supplied. Returns null if
-//the argument is wrong. Returns an empty array if no apps match.
   if (!name || typeof name != "string") return null;
   
   var appsByName = []
@@ -263,10 +334,19 @@ function getAppsByName(name) {
   return appsByName;
 }
 
+/**
+ * Returns the icon for a given app.
+ *
+ * @param id
+ *        The ID of the app
+ * @param size
+ *        The dimension of the icon to find (e.g. 128)
+ *
+ * @return
+ *        The URL of the icon, or null if the argument is wrong, or undefined
+ *        if the app doesn't exist or no suitable icon is found.
+ */
 function getAppIcon(id, size) {
-//Returns the URL string of the icon size belonging to the app id supplied.
-//Returns undefined if the app doesn't exist or if no suitable icon is
-//supplied. Returns null if an argument is wrong.
   if (!id || typeof id != "string") return null;
   if (!size) size = 128;
   else if (typeof size != "number") return null;
@@ -280,6 +360,9 @@ function getAppIcon(id, size) {
   return undefined;
 }
 
+/**
+ * Handles the dragStart event on an icon.
+ */
 function dragStartIcon(dragSource) {
   var dragIcon = $("<img>").attr("src", getAppIcon(dragSource.id));
   var width = dragIcon.width/2, height = dragIcon.height/2;
@@ -297,23 +380,38 @@ function dragStartIcon(dragSource) {
   $(".icons").attr("aria-dropeffect", "move"); //Mark all icons targets
 }
 
+/**
+ * Handles the dragEnd event on an icon.
+ */
 function dragEndIcon(dragSource) {
   $(dragSource).css("opacity", "1")
       .attr("aria-grabbed", "false");
 }
 
+/**
+ * Handles the dragOver event on an icon.
+ */
 function dragOverIcon(dropTarget) {
   event.preventDefault();
 }
 
+/**
+ * Handles the dragEnter event on an icon.
+ */
 function dragEnterIcon(dropTarget) {
   $(dropTarget).toggleClass("hover");
 }
 
+/**
+ * Handles the dragLeave event on an icon.
+ */
 function dragLeaveIcon(dropTarget) {
   $(dropTarget).toggleClass("hover");
 }
 
+/**
+ * Handles the drop event on an icon.
+ */
 function dropIcon(dropTarget) {
 //Handle icon drop reordering
   event.preventDefault();
@@ -326,8 +424,10 @@ function dropIcon(dropTarget) {
   $(".icons").attr("aria-dropeffect", "none"); //Mark no icons targets
 }
 
+/**
+ * Draws a context menu based on a target type.
+ */
 function drawContextMenu(event) {
-  //Draw the context menu based on the target type
   event.preventDefault();
   
   destroyContextMenu();
@@ -604,10 +704,12 @@ function drawContextMenu(event) {
   return true;
 }
 
+/**
+ * Destroys all visible context menus.
+ */
 function destroyContextMenu() {
-//Destroys the context menu when the user clicks outside of the menu
   if (document.getElementById("context-menu")) {
-    if (event.target == document.childNodes[1]) { //If it"s the root element
+    if (event.target == document.childNodes[1]) { //If it's the root element
       document.body.removeChild(document.getElementById("context-menu"));
       return true;
     } else if (event.target.id != "context-menu" &&
@@ -619,12 +721,27 @@ function destroyContextMenu() {
   }
   return false;
 }
-  
+
+/**
+ * Displays a modal prompt.
+ *
+ * @param titleText
+ *        The text to display in the title of the modal
+ * @param text
+ *        The text to display in the body of the modal
+ * @param buttonAction
+ *        The action to perform when the primary button is clicked
+ * @param buttonLabel
+ *        The text to display in the primary button
+ * @param iconUrl
+ *        The URL of an icon to display. If undefined, the icon is hidden.
+ */
 function prompt(titleText, text, buttonAction, buttonLabel, iconUrl) {
-//Displays a modal prompt
   $("#modal-title").text(titleText);
   $("#modal-text").text(text);
+  $("#modal-cancel").text(chrome.i18n.getMessage("buttonCancel"));
   $("#modal-button").text(buttonLabel)
+      .off("click")
       .one("click", buttonAction);
   if (iconUrl) {
     $("#modal-icon").attr("src", iconUrl).show();
@@ -634,8 +751,10 @@ function prompt(titleText, text, buttonAction, buttonLabel, iconUrl) {
   $("#modal").modal("show");
 }
 
+/**
+ * Makes offline apps stand out by making other apps transparent.
+ */
 function offLine() {
-//Make offline apps stand out by making other apps transparent
   var icons = $(".icon");
   for (var i = 0; i < apps.length; i++) {
     if (!apps[i].offlineEnabled && apps[i].enabled) {
@@ -645,26 +764,56 @@ function offLine() {
   }
 }
 
+/**
+ * Resets icon opacity to normal after an offLine event.
+ */
 function onLine() {
-//Reset apps opacity to make them opaque again
   $(".icon").css("opacity", "1.0");
 }
 
 //Uses YIQ color space to get the lightness of an RGB color (0.0 to 1.0)
+/**
+ * Gets the perceived lightness of an RGB color.
+ *
+ * @param rgb
+ *        An array of [r, g, b] values from 0-255
+ *
+ * @return
+ *        A value from 0.0 to 1.0 describing the perceived lightness.
+ *        White is defined to be 1.0, and black is defined to be 0.0.
+ */
 function getLightness(rgb){
   var r = rgb[0], g = rgb[1], b = rgb[2];
   return (r*299 + g*587 + b*114)/1000/255;
 }
 
+/**
+ * Injects the content script into the specified tab.
+ *
+ * @param tabId
+ *        The ID of the tab to inject
+ * @param changeInfo
+ *        An object representing the information about the tab's change event
+ * @param tab
+ *        An object representing information about the tab
+ */
 function injectContentScript(tabId, changeInfo, tab) {
   if (changeInfo.status == "complete" && tab.url.substring(0,4) == "http") {
     chrome.tabs.executeScript(tabId, {file: "chrome-webstore-item_finder.js"});
   }
 }
 
-//Page action stuff
+/**
+ * Checks whether the page action should be shown for the given tab.
+ *
+ * @param tabId
+ *        The ID of the tab to check
+ * @param changeInfo
+ *        An object representing the information about the tab's change event
+ * @param tab
+ *        An object representing information about the tab
+ */
 function checkUrl(tabId, changeInfo, tab) {
-//Check whether the URL is valid
   if (localStorage["page-action"] == "true" &&
       tab.url.substring(0, 34) != "https://chrome.google.com/webstore" &&
       (tab.url.substring(0, 7) == "http://" ||
@@ -675,6 +824,9 @@ function checkUrl(tabId, changeInfo, tab) {
   }
 }
 
+/**
+ * Displays the page action on all currently open tabs that match.
+ */
 function setUpCurrentTabs() {
   chrome.tabs.query({}, function(tabs) { //Get all tabs
     for (var i = 0; i < tabs.length; i++) {
@@ -683,6 +835,9 @@ function setUpCurrentTabs() {
   });
 }
 
+/**
+ * Prints infomation about an error.
+ */
 function errorHandler(e) {
   var msg = "";
   switch (e.code) {
@@ -708,6 +863,12 @@ function errorHandler(e) {
   console.error(msg);
 }
 
+/**
+ * Adds a web clip to the launcher.
+ *
+ * @param details
+ *        An object containing the ID, title, URL, and icon of the web clip.
+ */
 function addToHomeScreen(details) {
   //Builds an App object, then adds it to the list of apps. Used for web clips.
   if (isBackgroundPage) {
@@ -815,22 +976,23 @@ if (localStorage["background"] == "bg-custom") {
 
 //Adjust the color palette based on the dominant color of the background
 if (localStorage["background"] == "bg-custom") {
-  var dominantColor =
-      JSON.parse(localStorage["background-dominant-color"]);
+  var dominantColor = JSON.parse(localStorage["background-dominant-color"]);
+
   if (getLightness(dominantColor)[2] > 0.5) {
-    document.styleSheets[0].addRule(".icon > label", "color: #000");
-    document.styleSheets[0].addRule(".icon > label",
-        "text-shadow: #fff 0 0 10px, #fff 0 0 10px," +
-        "#fff 0 0 10px, #fff 0 0 10px, #fff 0 0 10px");
-    if (localStorage["chameleon"] == "true") {
-      document.styleSheets[0].addRule("#context-menu", "color: #000");
-      document.styleSheets[0].addRule("#context-menu li.disabled",
-          "color: rgba(0, 0, 0, 0.25)");
-    }
+    $("body").addClass("light-bg");
+    // document.styleSheets[0].addRule(".icon > label", "color: #000");
+    // document.styleSheets[0].addRule(".icon > label",
+    //     "text-shadow: #fff 0 0 10px, #fff 0 0 10px," +
+    //     "#fff 0 0 10px, #fff 0 0 10px, #fff 0 0 10px");
+    // if (localStorage["chameleon"] == "true") {
+    //   document.styleSheets[0].addRule("#context-menu", "color: #000");
+    //   document.styleSheets[0].addRule("#context-menu li.disabled",
+    //       "color: rgba(0, 0, 0, 0.25)");
+    // }
   }
+
   if (localStorage["chameleon"] == "true") {
-    var secondaryColor =
-        JSON.parse(localStorage["background-secondary-color"]);
+    var secondaryColor = JSON.parse(localStorage["background-secondary-color"]);
     var colors = JSON.parse(localStorage["background-colors"]);
     var rgb = colors[0];
     var rgbLight = colors[1];

@@ -18,7 +18,7 @@ a {
 }
 
 .icon-col {
-  padding: 2%;
+  padding: 1.25%;
 }
 
 .icon {
@@ -30,7 +30,6 @@ a {
   -webkit-transition-property: background, opacity;
   -webkit-transition-timing-function: linear;
   -webkit-user-drag: element;
-  /*width: 10%;*/
   cursor: pointer;
 }
 
@@ -39,14 +38,14 @@ a {
   text-decoration: none;
 }
 
-.icon img {
+.icon > img {
   display: block;
   height: auto;
   margin: 0 auto;
   width: 75%;
 }
 
-.icon span {
+.icon > span {
   color: #fff;
   display: block;
   line-height: 2em;
@@ -59,6 +58,12 @@ a {
   white-space: nowrap;
 }
 
+.light-bg .icon > span {
+  color: #000;
+  text-shadow: #fff 0 0 10px, #fff 0 0 10px,
+      #fff 0 0 10px, #fff 0 0 10px, #fff 0 0 10px;
+}
+
 .icon.drag {
   border-radius: 13px;
   font-size: 1.3em;
@@ -68,6 +73,8 @@ a {
 
 #modal-icon {
   margin-right: 10px;
+  width: 72px;
+  height: 72px;
 }
 
 #context-menu {
@@ -80,6 +87,14 @@ a {
   max-width: 250px;
   padding: 10px 0;
   position: absolute;
+}
+
+.light-bg #context-menu {
+  color: #000;
+}
+
+.light-bg #context-menu li.disabled {
+  color: rgba(0, 0, 0, 0.25);
 }
 
 /* CSS arrow hack:

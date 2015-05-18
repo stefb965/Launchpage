@@ -7,18 +7,6 @@
     "message": "Un lanceur esthétiques d'applications de la page nouvel onglet",
     "description": "La description de l'extension"
   },
-  "infobarNoApps": {
-    "message": "Vous n'avez pas des applications. Cliquez sur l'icône Chrome Web Store ci-dessous pour télécharger des applications.",
-    "description": "Avertir à l'utilisateur qu'il n'ont pas les applications"
-  },
-  "infobarOffline": {
-    "message": "Vous êtes actuellement déconnecté de l'Internet. Apps qui fonctionnent sans accès à Internet ont été mis en évidence.",
-    "description": "Dites à l'utilisateur, ils sont hors ligne et pourquoi leurs applications en mode hors connexion sont mis en évidence"
-  },
-  "infobarClose": {
-    "message": "Fermer",
-    "description": "Laissez l'utilisateur ferme la barre d'informations"
-  },
   "iconSettings": {
     "message": "Paramètres",
     "description": "Le nom de l'icône Chrome Paramètres"
@@ -34,12 +22,12 @@
     }
   },
   "iconWebStore": {
-    "message": "Chrome Web Store",
-    "description": "Chrome Web Store icône"
+    "message": "Web Store",
+    "description": "Web Store icône"
   },
   "iconWebStoreDescription": {
     "message": "Découvrez des applications, jeux, extensions et thèmes exceptionnels pour Google Chrome.",
-    "description": "La description du Chrome Web Store icône"
+    "description": "La description du Web Store icône"
   },
   "buttonCancel": {
     "message": "Annuler",

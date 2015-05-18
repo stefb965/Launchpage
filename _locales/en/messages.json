@@ -7,18 +7,6 @@
     "message": "An aesthetic app launcher for the new tab page",
     "description": "The description of the extension"
   },
-  "infobarNoApps": {
-    "message": "You don't have any apps. Click the Chrome Web Store icon below to download apps.",
-    "description": "Warn the user that they don't have any apps"
-  },
-  "infobarOffline": {
-    "message": "You are currently offline. Apps that work without Internet access have been highlighted.",
-    "description": "Tell the user they are offline and why their offline apps are highlighted"
-  },
-  "infobarClose": {
-    "message": "Close",
-    "description": "Let the user close the infobar"
-  },
   "iconSettings": {
     "message": "Settings",
     "description": "The name of the Chrome Settings icon"
@@ -34,27 +22,27 @@
     }
   },
   "iconWebStore": {
-    "message": "Chrome Web Store",
-    "description": "Chrome Web Store icon"
+    "message": "Web Store",
+    "description": "Web Store icon"
   },
   "iconWebStoreDescription": {
     "message": "Discover great apps, games, extensions and themes for Google Chrome.",
-    "description": "The description of the Chrome Web Store icon"
+    "description": "The description of the Web Store icon"
   },
   "buttonCancel": {
     "message": "Cancel",
     "description": "Cancel button"
   },
   "buttonUninstall": {
-    "message": "Uninstall",
+    "message": "Remove",
     "description": "Button to uninstall an app"
   },
   "uninstallPageTitle": {
-    "message": "Confirm Uninstallation",
+    "message": "Remove",
     "description": "The title of the Uninstall dialog"
   },
   "uninstallApp": {
-    "message": "Uninstall \"$APP$\"?",
+    "message": "Do you want to remove \"$APP$\"?",
     "description": "Ask the user to confirm uninstalling an app",
     "placeholders": {
       "app": {
@@ -78,11 +66,11 @@
     "description": "Button to remove a web clip"
   },
   "removePageTitle": {
-    "message": "Confirm Removal",
+    "message": "Remove",
     "description": "The title of the Remove Web Clip dialog"
   },
   "removeWebClipMessage": {
-    "message": "Remove \"$APP$\"?",
+    "message": "Do you want to remove \"$APP$\"?",
     "description": "Ask the user to confirm removing a web clip",
     "placeholders": {
       "app": {

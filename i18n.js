@@ -1,4 +1,4 @@
-//i18nize the HTML based on the i18n-content attribute
+//Internationalize the HTML based on the i18n-content attribute
 var i18n=function(){function i(b){b=b.querySelectorAll(l);
 for(var d,f=0;d=b[f];f++)for(var e=0;e<h.length;e++){var c=h[e],
 a=d.getAttribute(c);a!=null&&j[c](d,a)}}var j={'i18n-content':function(b,d){
