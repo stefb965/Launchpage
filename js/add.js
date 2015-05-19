@@ -171,4 +171,4 @@ document.getElementById('cancel').addEventListener('click', function() {
  * Post scripts
  ******************************************************************************/
 
-chrome.tabs.executeScript(null, {file: 'icon_finder.js'}); //Inject the content script
+chrome.tabs.executeScript(null, {file: 'js/icon_finder.js'}); //Inject the content script
