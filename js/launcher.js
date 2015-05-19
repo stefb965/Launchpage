@@ -49,7 +49,8 @@ var appTypes = {
  */
 function Icon(id, name, url) {
   var col = $("<div class='icon-col col-xs-4 col-sm-3 col-md-2'></div>");
-  var app = $("<a href='url' class='icon' role='link'></a>")
+  var app = $("<a class='icon' role='link'></a>")
+      .attr("href", url)
       .attr("aria-labelledby", id + "-label")
       .attr("aria-grabbed", "false")
       .attr("id", id);
