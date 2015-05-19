@@ -148,7 +148,7 @@ function getApps(addons) {
   chromePrefs.description =
       chrome.i18n.getMessage("iconSettingsDescription", appName);
   chromePrefs.homepageUrl = "";
-  chromePrefs.icons[0].url = "skin/wrench.png";
+  chromePrefs.icons[0].url = "icons/wrench.png";
   chromePrefs.type = appTypes.stockApp;
   chromePrefs.mayDisable = false;
   chromePrefs.offlineEnabled = true;
@@ -161,7 +161,8 @@ function getApps(addons) {
       chrome.i18n.getMessage("iconWebStore"),
       "https://chrome.google.com/webstore?utm_source=launchpage");
   webStore.description = chrome.i18n.getMessage("iconWebStoreDescription");
-  webStore.icons[0].url = "skin/webstore.png";
+  chromePrefs.homepageUrl = "https://chrome.google.com/webstore";
+  webStore.icons[0].url = "icons/webstore.png";
   webStore.type = appTypes.stockApp;
   webStore.mayDisable = false;
   webStore.offlineEnabled = false;
@@ -610,14 +611,14 @@ function drawContextMenu(event) {
       arrow.className = "top";
     
       //Center the context menu horizontally on the icon
-      contextMenu.style.left = node.offsetLeft +
+      contextMenu.style.left = node.parentNode.offsetLeft - 11 +
           (parseInt(getComputedStyle(node)["width"]) +
            parseInt(getComputedStyle(node)["padding-left"]) +
            parseInt(getComputedStyle(node)["padding-right"]) -
            parseInt(getComputedStyle(contextMenu)["width"]))/2 + "px";
           
       //Position the context menu below the icon
-      contextMenu.style.top = node.offsetTop -
+      contextMenu.style.top = node.parentNode.offsetTop - 33 -
           parseInt(getComputedStyle(arrow)["top"]) +
           parseInt(getComputedStyle(node)["height"]) +
           parseInt(getComputedStyle(node)["padding-top"]) +
