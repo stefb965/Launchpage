@@ -442,8 +442,9 @@ function drawContextMenu(event) {
     node = node.parentNode;
   }
 
-  if (node.className.substring(0, 5) == "modal" ||
-      node.className.substring(0, 3) == "btn") {
+  if (node.className &&
+      (node.className.substring(0, 5) == "modal" ||
+      node.className.substring(0, 3) == "btn")) {
     cancelDrawing = true;
   }
 
