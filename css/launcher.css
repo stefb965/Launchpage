@@ -13,8 +13,8 @@ body {
   padding: 4%;
 }
 
-a {
-  outline: none;
+a, button, .btn {
+  outline: none !important;
 }
 
 .icon-col {

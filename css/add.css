@@ -4,6 +4,10 @@ body {
   -webkit-user-select: none;
 }
 
+a, button, .btn {
+  outline: none !important;
+}
+
 input[type='text'] {
   width: 100%;
   text-align: center;
