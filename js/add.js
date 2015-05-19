@@ -9,8 +9,9 @@ var details; //Stores the details sent from the content script
 
 function showInfo(url) {
 //Displays web clip info in popup
-  document.getElementById('icon').src = url;
-  document.getElementById('add').disabled = '';
+  $("#icon").attr("src", url).show();
+  $("#loading").hide();
+  $("#add").removeAttr("disabled");
 }
 
 function randomId() {

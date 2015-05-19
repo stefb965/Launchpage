@@ -1,0 +1,25 @@
+body {
+  cursor: default;
+  min-width: 300px;
+  -webkit-user-select: none;
+}
+
+input[type='text'] {
+  width: 100%;
+  text-align: center;
+}
+
+#icon {
+  display: none;
+  height: 96px;
+  width: 96px;
+}
+
+#icon-container {
+  text-align: center;
+  height: 96px;
+}
+
+canvas {
+  display: none;
+}

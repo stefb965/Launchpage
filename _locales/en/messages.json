@@ -88,12 +88,8 @@
     "description": "Button to add website to home screen via page action"
   },
   "addWebClipHeading": {
-    "message": "Add to home screen",
+    "message": "Add to Launchpage",
     "description": "Heading in page action popup"
-  },
-  "addWebClipDescription": {
-    "message": "An icon will be added to your home screen so you can quickly access this web site.",
-    "description": "Description in page action popup"
   },
   "manageExtensions": {
     "message": "Manage extensions...",
