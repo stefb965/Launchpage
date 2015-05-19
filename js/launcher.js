@@ -513,6 +513,9 @@ function drawContextMenu(event) {
                   function() {
                     chrome.management.uninstall(
                         app.id,
+                        {
+                          showConfirmDialog: false
+                        },
                         window.location.reload());
                   },
                   chrome.i18n.getMessage("buttonUninstall"),
