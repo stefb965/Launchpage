@@ -347,7 +347,7 @@ function getAppIcon(id, size) {
  * Handles the dragStart event on an icon.
  */
 function dragStartIcon(dragSource) {
-  var dragIcon = $("<img>").attr("src", getAppIcon(dragSource.id));
+  var dragIcon = $("<img>").attr("src", getAppIcon(dragSource.id))[0];
   var width = dragIcon.width/2, height = dragIcon.height/2;
   if (!width) width = 64;
   if (!height) height = 64;
