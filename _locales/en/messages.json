@@ -38,11 +38,17 @@
     "description": "Button to uninstall an app"
   },
   "uninstallPageTitle": {
-    "message": "Remove",
-    "description": "The title of the Uninstall dialog"
+    "message": "Remove \"$APP$\"?",
+    "description": "The title of the Uninstall dialog",
+    "placeholders": {
+      "app": {
+        "content": "$1",
+        "example": "Angry Birds"
+      }
+    }
   },
   "uninstallApp": {
-    "message": "Are you sure you want to remove \"$APP$\"?",
+    "message": "Are you sure you want to remove this app?",
     "description": "Ask the user to confirm uninstalling an app",
     "placeholders": {
       "app": {
@@ -66,11 +72,17 @@
     "description": "Button to remove a web clip"
   },
   "removePageTitle": {
-    "message": "Remove",
-    "description": "The title of the Remove Web Clip dialog"
+    "message": "Remove \"$APP$\"?",
+    "description": "The title of the Remove Web Clip dialog",
+    "placeholders": {
+      "app": {
+        "content": "$1",
+        "example": "Launchpage - Chrome Web Store"
+      }
+    }
   },
   "removeWebClipMessage": {
-    "message": "Are you sure you want to remove \"$APP$\"?",
+    "message": "Are you sure you want to remove this web clip?",
     "description": "Ask the user to confirm removing a web clip",
     "placeholders": {
       "app": {

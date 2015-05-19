@@ -508,8 +508,10 @@ function drawContextMenu(event) {
                 app.type == appTypes.packagedApp ||
                 app.type == appTypes.legacyPackagedApp) {
               prompt(
-                  chrome.i18n.getMessage("uninstallPageTitle"),
-                  chrome.i18n.getMessage("uninstallApp", app.name),
+                  chrome.i18n.getMessage("uninstallPageTitle", app.name),
+                  // app.name,
+                  // chrome.i18n.getMessage("uninstallApp", app.name),
+                  undefined,
                   function() {
                     chrome.management.uninstall(
                         app.id,
@@ -522,8 +524,10 @@ function drawContextMenu(event) {
                   node.childNodes[0].src);
             } else {
               prompt(
-                  chrome.i18n.getMessage("removePageTitle"),
-                  chrome.i18n.getMessage("removeWebClipMessage", app.name),
+                  chrome.i18n.getMessage("removePageTitle", app.name),
+                  // app.name,
+                  // chrome.i18n.getMessage("removeWebClipMessage", app.name),
+                  undefined,
                   function() {
                     var index = getAppIndexById(app.id);
                     apps.splice(index, 1);
@@ -736,7 +740,11 @@ function destroyContextMenu() {
  */
 function prompt(titleText, text, buttonAction, buttonLabel, iconUrl) {
   $("#modal-title").text(titleText);
-  $("#modal-text").text(text);
+  if (text != undefined) {
+    $("#modal-text").text(text).show();
+  } else {
+    $("#modal-text").hide();
+  }
   $("#modal-cancel").text(chrome.i18n.getMessage("buttonCancel"));
   $("#modal-button").text(buttonLabel)
       .off("click")
