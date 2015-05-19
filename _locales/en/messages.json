@@ -42,7 +42,7 @@
     "description": "The title of the Uninstall dialog"
   },
   "uninstallApp": {
-    "message": "Do you want to remove \"$APP$\"?",
+    "message": "Are you sure you want to remove \"$APP$\"?",
     "description": "Ask the user to confirm uninstalling an app",
     "placeholders": {
       "app": {
@@ -70,7 +70,7 @@
     "description": "The title of the Remove Web Clip dialog"
   },
   "removeWebClipMessage": {
-    "message": "Do you want to remove \"$APP$\"?",
+    "message": "Are you sure you want to remove \"$APP$\"?",
     "description": "Ask the user to confirm removing a web clip",
     "placeholders": {
       "app": {

@@ -7,17 +7,17 @@
   "homepage_url": "https://github.com/ajcord/Launchpage",
   "default_locale": "en",
   "background": {
-    "page": "launcher.html"
+    "page": "html/launcher.html"
   },
-  "options_page": "options.html",
+  "options_page": "html/options.html",
   "options_ui": {
-    "page": "options.html",
+    "page": "html/options.html",
     "chrome_style": true
   },
   "incognito": "spanning",
   "offline_enabled": true,
   "chrome_url_overrides": {
-    "newtab": "launcher.html"
+    "newtab": "html/launcher.html"
   },
   "permissions": [
     "management",
@@ -27,14 +27,14 @@
     "unlimitedStorage"
   ],
   "icons": {
-    "128": "skin/icon_128.png",
-    "48": "skin/icon_48.png",
-    "32": "skin/icon_32.png",
-    "16": "skin/icon_16.png"
+    "128": "icons/icon_128.png",
+    "48": "icons/icon_48.png",
+    "32": "icons/icon_32.png",
+    "16": "icons/icon_16.png"
   },
   "page_action": {
-    "default_icon": "skin/icon_19.png",
+    "default_icon": "icons/icon_19.png",
     "default_title": "Add to Launchpage",
-    "default_popup": "add.html"
+    "default_popup": "html/add.html"
   }
 }

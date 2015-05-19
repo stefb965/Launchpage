@@ -79,7 +79,6 @@ function Icon(id, name, url) {
       });
 
   $(col).append(app);
-  // return col[0];
   return app[0];
 }
 
@@ -138,7 +137,7 @@ function getApps(addons) {
         addons[i].type == appTypes.packagedApp ||
         addons[i].type == appTypes.legacyPackagedApp) {
       apps.push(addons[i]);
-    } else if (addons[i].id == chrome.i18n.getMessage("@@extension_id")) {
+    } else if (addons[i].id == chrome.runtime.id) {
       launchpageInfo = addons[i];
     }
   }
@@ -148,7 +147,7 @@ function getApps(addons) {
   chromePrefs.description =
       chrome.i18n.getMessage("iconSettingsDescription", appName);
   chromePrefs.homepageUrl = "";
-  chromePrefs.icons[0].url = "icons/wrench.png";
+  chromePrefs.icons[0].url = chrome.runtime.getURL("../icons/wrench.png");
   chromePrefs.type = appTypes.stockApp;
   chromePrefs.mayDisable = false;
   chromePrefs.offlineEnabled = true;
@@ -162,7 +161,7 @@ function getApps(addons) {
       "https://chrome.google.com/webstore?utm_source=launchpage");
   webStore.description = chrome.i18n.getMessage("iconWebStoreDescription");
   chromePrefs.homepageUrl = "https://chrome.google.com/webstore";
-  webStore.icons[0].url = "icons/webstore.png";
+  webStore.icons[0].url = chrome.runtime.getURL("../icons/webstore.png");
   webStore.type = appTypes.stockApp;
   webStore.mayDisable = false;
   webStore.offlineEnabled = false;
@@ -305,8 +304,6 @@ function getAppById(id) {
  *        wrong or the app doesn't exist.
  */
 function getAppIndexById(id) {
-//Returns the index number of the app that matches the id supplied. Returns null
-//if the app doesn't exist or if the argument is wrong.
   if (!id || typeof id != "string") return null;
   
   for (var node = 0; node < apps.length; node++) {
@@ -409,6 +406,8 @@ function dropIcon(dropTarget) {
 
 /**
  * Draws a context menu based on a target type.
+ *
+ * TODO: FUBAR; rewrite.
  */
 function drawContextMenu(event) {
   event.preventDefault();
@@ -606,24 +605,26 @@ function drawContextMenu(event) {
     case "icon":
     //if the target is an icon, display the context menu below the icon
 
-      node.focus(); //Set the focus to the icon as visual feedback
+      var n = node.parentNode;
+
+      n.focus(); //Set the focus to the icon as visual feedback
     
       //Make the arrow display on top of the context menu
       arrow.className = "top";
     
       //Center the context menu horizontally on the icon
-      contextMenu.style.left = node.parentNode.offsetLeft - 11 +
-          (parseInt(getComputedStyle(node)["width"]) +
-           parseInt(getComputedStyle(node)["padding-left"]) +
-           parseInt(getComputedStyle(node)["padding-right"]) -
+      contextMenu.style.left = n.offsetLeft - 11 +
+          (parseInt(getComputedStyle(n)["width"]) +
+           parseInt(getComputedStyle(n)["padding-left"]) +
+           parseInt(getComputedStyle(n)["padding-right"]) -
            parseInt(getComputedStyle(contextMenu)["width"]))/2 + "px";
           
       //Position the context menu below the icon
-      contextMenu.style.top = node.parentNode.offsetTop - 33 -
+      contextMenu.style.top = n.offsetTop - 33 -
           parseInt(getComputedStyle(arrow)["top"]) +
-          parseInt(getComputedStyle(node)["height"]) +
-          parseInt(getComputedStyle(node)["padding-top"]) +
-          parseInt(getComputedStyle(node)["padding-bottom"]) + "px";
+          parseInt(getComputedStyle(n)["height"]) +
+          parseInt(getComputedStyle(n)["padding-top"]) +
+          parseInt(getComputedStyle(n)["padding-bottom"]) + "px";
       
       //Center the arrow horizontally on the menu
       arrow.style.left =
@@ -642,7 +643,7 @@ function drawContextMenu(event) {
             arrow.className = "bottom"; //Make the arrow show below the menu
         
             //Position the context menu above the icon
-            contextMenu.style.top = node.offsetTop +
+            contextMenu.style.top = n.offsetTop +
                 parseInt(getComputedStyle(arrow)["bottom"]) -
                 parseInt(getComputedStyle(contextMenu)["height"]) -
                 parseInt(getComputedStyle(contextMenu)["padding-top"]) -
@@ -751,7 +752,7 @@ function offLine() {
   var icons = $(".icon");
   for (var i = 0; i < apps.length; i++) {
     if (!apps[i].offlineEnabled && apps[i].enabled) {
-    //If the app is not offline-enabled
+      //The app is not offline-enabled
       $(icons[i]).css("opacity", "0.25");
     }
   }
