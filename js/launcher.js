@@ -548,46 +548,6 @@ function drawContextMenu(event) {
       });
       $(node).popover("show");
       break;
-      
-    // default: //If the node isn't any of the above (e.g. the root element)
-    //   var launchpageLi = document.createElement("li");
-    //   var launchpageA = document.createElement("a");
-    //   launchpageA.appendChild(document.createTextNode(
-    //       chrome.i18n.getMessage("extName")));
-    //   launchpageA.style.fontWeight = "bold";
-    //   launchpageLi.setAttribute("role", "menuitem");
-    //   if (launchpageInfo.homepageUrl) {
-    //     launchpageA.href = launchpageInfo.homepageUrl;
-    //   } else {
-    //     launchpageLi.className = "disabled";
-    //   }
-    //   var prefsLi = document.createElement("li");
-    //   prefsLi.setAttribute("role", "menuitem");
-    //   var prefsA = document.createElement("a");
-    //   prefsA.appendChild(document.createTextNode(
-    //       chrome.i18n.getMessage("options")));
-    //   prefsA.href = "prefs.html";
-      
-    //   var manageLi = document.createElement("li");
-    //   manageLi.setAttribute("role", "menuitem");
-    //   var manageA = document.createElement("a");
-    //   manageA.appendChild(document.createTextNode(
-    //       chrome.i18n.getMessage("manageExtensions")));
-    //   manageA.href = "chrome://extensions";
-    //   manageA.addEventListener("click", function() {
-    //     chrome.tabs.update({url:"chrome://extensions"});
-    //   }, false);
-      
-    //   launchpageLi.appendChild(launchpageA);
-    //   prefsLi.appendChild(prefsA);
-    //   manageLi.appendChild(manageA);
-    //   contextMenu.appendChild(launchpageLi);
-    //   contextMenu.appendChild(document.createElement("hr"));
-    //   contextMenu.childNodes[2].setAttribute("role", "separator");
-    //   contextMenu.appendChild(prefsLi);
-    //   contextMenu.appendChild(manageLi);
-
-    //   break;
   }
   return true;
 }
