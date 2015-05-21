@@ -469,18 +469,6 @@ function drawContextMenu(event) {
       iconLi.append(iconA);
       contextMenu.append(iconLi);
 
-      // var iconLi = document.createElement("li");
-      // iconLi.setAttribute("role", "menuitem");
-      // var iconA = document.createElement("a");
-      // iconA.appendChild(document.createTextNode(node.innerText));
-      // iconA.style.fontWeight = "bold";
-      // iconA.href = node.href;
-      // if (iconA.href.substring(0, 17) == "chrome://settings") {
-      //   iconA.addEventListener("click", function() {
-      //     chrome.tabs.update({url:"chrome://settings"});
-      //   }, false);
-      // }
-
       var app = getAppById(node.id);
 
       if (app.type == appTypes.hostedApp ||
@@ -559,134 +547,47 @@ function drawContextMenu(event) {
         }
       });
       $(node).popover("show");
-      // $("body").append(contextMenu);
-      // $(contextMenu).show();
-
-      // var optionsLi = document.createElement("li");
-      // optionsLi.setAttribute("role", "menuitem");
-      // var optionsA = document.createElement("a");
-      // optionsA.appendChild(document.createTextNode(
-      //     chrome.i18n.getMessage("options")));
-      // var app = getAppById(node.id);
-      // if (app.optionsUrl) {
-      //   optionsA.href = app.optionsUrl;
-      // } else {
-      //   optionsLi.className = "disabled";
-      // }
-
-/*
-      var removeLi = document.createElement("li");
-      removeLi.setAttribute("role", "menuitem");
-      var removeA = document.createElement("a");
-      if (app.type == appTypes.hostedApp ||
-          app.type == appTypes.packagedApp ||
-          app.type == appTypes.legacyPackagedApp) {
-        removeA.appendChild(document.createTextNode(
-            chrome.i18n.getMessage("remove", appName)));
-      } else {
-        removeA.appendChild(document.createTextNode(
-            chrome.i18n.getMessage("removeWebClip")));
-      }
-
-      if (app.mayDisable == true) {
-        removeA.href = "#";
-        removeA.addEventListener("click", function(){
-            document.body.removeChild(
-                document.getElementById("context-menu"));
-            if (app.type == appTypes.hostedApp ||
-                app.type == appTypes.packagedApp ||
-                app.type == appTypes.legacyPackagedApp) {
-              prompt(
-                  chrome.i18n.getMessage("uninstallPageTitle", app.name),
-                  // app.name,
-                  // chrome.i18n.getMessage("uninstallApp", app.name),
-                  undefined,
-                  function() {
-                    chrome.management.uninstall(
-                        app.id,
-                        {
-                          showConfirmDialog: false
-                        },
-                        window.location.reload());
-                  },
-                  chrome.i18n.getMessage("buttonUninstall"),
-                  node.childNodes[0].src);
-            } else {
-              prompt(
-                  chrome.i18n.getMessage("removePageTitle", app.name),
-                  // app.name,
-                  // chrome.i18n.getMessage("removeWebClipMessage", app.name),
-                  undefined,
-                  function() {
-                    var index = getAppIndexById(app.id);
-                    apps.splice(index, 1);
-                    localStorage["apps"] = JSON.stringify(apps);
-                    window.location.reload();
-                  },
-                  chrome.i18n.getMessage("buttonRemove"),
-                  node.childNodes[0].src);
-            }
-          }, false);
-      } else {
-        removeLi.className = "disabled";
-      }
-      
-      iconLi.appendChild(iconA);
-      optionsLi.appendChild(optionsA);
-      removeLi.appendChild(removeA);
-      contextMenu.appendChild(iconLi);
-      if (removeLi.className != "disabled") {
-        contextMenu.appendChild(document.createElement("hr"));
-        contextMenu.childNodes[2].setAttribute("role", "separator");
-      }
-      if (optionsLi.className != "disabled") {
-        contextMenu.appendChild(optionsLi);
-      }
-      if (removeLi.className != "disabled") {
-        contextMenu.appendChild(removeLi);
-      }
-*/
       break;
       
-    default: //If the node isn't any of the above (e.g. the root element)
-      var launchpageLi = document.createElement("li");
-      var launchpageA = document.createElement("a");
-      launchpageA.appendChild(document.createTextNode(
-          chrome.i18n.getMessage("extName")));
-      launchpageA.style.fontWeight = "bold";
-      launchpageLi.setAttribute("role", "menuitem");
-      if (launchpageInfo.homepageUrl) {
-        launchpageA.href = launchpageInfo.homepageUrl;
-      } else {
-        launchpageLi.className = "disabled";
-      }
-      var prefsLi = document.createElement("li");
-      prefsLi.setAttribute("role", "menuitem");
-      var prefsA = document.createElement("a");
-      prefsA.appendChild(document.createTextNode(
-          chrome.i18n.getMessage("options")));
-      prefsA.href = "prefs.html";
+    // default: //If the node isn't any of the above (e.g. the root element)
+    //   var launchpageLi = document.createElement("li");
+    //   var launchpageA = document.createElement("a");
+    //   launchpageA.appendChild(document.createTextNode(
+    //       chrome.i18n.getMessage("extName")));
+    //   launchpageA.style.fontWeight = "bold";
+    //   launchpageLi.setAttribute("role", "menuitem");
+    //   if (launchpageInfo.homepageUrl) {
+    //     launchpageA.href = launchpageInfo.homepageUrl;
+    //   } else {
+    //     launchpageLi.className = "disabled";
+    //   }
+    //   var prefsLi = document.createElement("li");
+    //   prefsLi.setAttribute("role", "menuitem");
+    //   var prefsA = document.createElement("a");
+    //   prefsA.appendChild(document.createTextNode(
+    //       chrome.i18n.getMessage("options")));
+    //   prefsA.href = "prefs.html";
       
-      var manageLi = document.createElement("li");
-      manageLi.setAttribute("role", "menuitem");
-      var manageA = document.createElement("a");
-      manageA.appendChild(document.createTextNode(
-          chrome.i18n.getMessage("manageExtensions")));
-      manageA.href = "chrome://extensions";
-      manageA.addEventListener("click", function() {
-        chrome.tabs.update({url:"chrome://extensions"});
-      }, false);
+    //   var manageLi = document.createElement("li");
+    //   manageLi.setAttribute("role", "menuitem");
+    //   var manageA = document.createElement("a");
+    //   manageA.appendChild(document.createTextNode(
+    //       chrome.i18n.getMessage("manageExtensions")));
+    //   manageA.href = "chrome://extensions";
+    //   manageA.addEventListener("click", function() {
+    //     chrome.tabs.update({url:"chrome://extensions"});
+    //   }, false);
       
-      launchpageLi.appendChild(launchpageA);
-      prefsLi.appendChild(prefsA);
-      manageLi.appendChild(manageA);
-      contextMenu.appendChild(launchpageLi);
-      contextMenu.appendChild(document.createElement("hr"));
-      contextMenu.childNodes[2].setAttribute("role", "separator");
-      contextMenu.appendChild(prefsLi);
-      contextMenu.appendChild(manageLi);
+    //   launchpageLi.appendChild(launchpageA);
+    //   prefsLi.appendChild(prefsA);
+    //   manageLi.appendChild(manageA);
+    //   contextMenu.appendChild(launchpageLi);
+    //   contextMenu.appendChild(document.createElement("hr"));
+    //   contextMenu.childNodes[2].setAttribute("role", "separator");
+    //   contextMenu.appendChild(prefsLi);
+    //   contextMenu.appendChild(manageLi);
 
-      break;
+    //   break;
   }
   return true;
 }
