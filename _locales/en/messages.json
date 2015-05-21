@@ -111,64 +111,12 @@
     "message": "Options",
     "description": "The context menu item for an app's Options"
   },
-  "optionsSearchField": {
-    "message": "Search options",
-    "description": "The placeholder for the search box on the Options page"
-  },
-  "optionsBasics": {
-    "message": "Basics",
-    "description": "The Basics tab in the Options page"
-  },
-  "optionsHelp": {
-    "message": "Help",
-    "description": "The Help tab in the Options page"
-  },
-  "optionsGetHelp": {
-    "message": "Get Help",
-    "description": "The Get Help section in the Options page"
-  },
-  "optionsHelpButton": {
-    "message": "Get help using Launchpage",
-    "description": "The Help button in the Options page"
-  },
-  "optionsReportProblem": {
-    "message": "Report a problem",
-    "description": "The Report Problem button in the Options page"
-  },
-  "optionsAbout": {
-    "message": "About Launchpage",
-    "description": "The About section in the Options page"
-  },
-  "optionsVersion": {
-    "message": "Version $VERSION$",
-    "description": "The version number in the Options page",
-    "placeholders": {
-      "version": {
-        "content": "$1",
-        "example": "1.0"
-      }
-    }
-  },
-  "optionsCopyright": {
-    "message": "Copyright © $YEAR$ Alex Cordonnier. All Rights Reserved.",
-    "description": "The copyright notice in the Options page",
-    "placeholders": {
-      "year": {
-        "content": "$1",
-        "example": "2012"
-      }
-    }
-  },
   "optionsBackground": {
     "message": "Background",
     "description": "The Background section in the Options page"
   },
-  "optionsBackgroundNotice": {
-    "message": "Note: Using a high-resolution background will greatly reduce the speed of the extension. Please don't use an image larger than your monitor.",
-    "description": "Warn the user about the speed costs of high-resolution backgrounds"
-  },
   "chameleonBackground": {
-    "message": "Change the theme colors based on my background",
+    "message": "Coordinate colors with background",
     "description": "Whether to change the color palette automatically"
   },
   "optionsPageAction": {
@@ -176,107 +124,11 @@
     "description": "The Page Action section in the Options page"
   },
   "usePageAction": {
-    "message": "Display an icon in the address bar so I can add pages to the home screen",
+    "message": "Show icon to add to home screen",
     "description": "Whether to display the page action in the address bar"
   },
   "optionDefault": {
     "message": "Default",
     "description": "The default option"
-  },
-  "contributors": {
-    "message": "Contributors",
-    "description": "The link to the list of contributors"
-  },
-  "contribDevelopers": {
-    "message": "Developers",
-    "description": "The heading for the contributor list of developers"
-  },
-  "contribTesters": {
-    "message": "Beta testers",
-    "description": "The heading for the contributor list of beta testers"
-  },
-  "contribTranslators": {
-    "message": "Translators",
-    "description": "The heading for the contributor list of translators"
-  },
-  "helpHeading": {
-    "message": "Launchpage Help",
-    "description": "The heading for the Help page"
-  },
-  "faqHeading": {
-    "message": "Frequently Asked Questions",
-    "description": "The heading for the FAQ section on the Help page"
-  },
-  "faqInstallQ": {
-    "message": "Q: How do I install Launchpage?",
-    "description": "How to install Launchpage"
-  },
-  "faqInstallA": {
-    "message": "A: Go to https://chrome.google.com/webstore/detail/launchpage/bkdpdcgcbkkohcelcibdenakcngkmamg and click Add to Chrome to install Launchpage.",
-    "description": "How to install Launchpage"
-  },
-  "faqOpenQ": {
-    "message": "Q: How do I open Launchpage?",
-    "description": "How to open Launchpage"
-  },
-  "faqOpenA": {
-    "message": "A: Just open a new tab after installing Launchpage, and your home screen will show up automatically.",
-    "description": "How to open Launchpage"
-  },
-  "faqOpenAppQ": {
-    "message": "Q: How do I open an app?",
-    "description": "How to open an app"
-  },
-  "faqOpenAppA": {
-    "message": "A: From a new tab, click on the icon of the app you want to launch.",
-    "description": "How to open an app"
-  },
-  "faqRearrangeQ": {
-    "message": "Q: How do rearrange my apps?",
-    "description": "How to rearrange apps"
-  },
-  "faqRearrangeA": {
-    "message": "A: From a new tab, hold down the mouse button and drag the app you want to move over another app.",
-    "description": "How to rearrange apps"
-  },
-  "faqOptionsQ": {
-    "message": "Q: How do I set Launchpage options?",
-    "description": "How to set options"
-  },
-  "faqOptionsA": {
-    "message": "A: From a new tab, right click on any empty space and click Options.",
-    "description": "How to set options"
-  },
-  "faqBackgroundQ": {
-    "message": "Q: How do I change the background?",
-    "description": "How to choose a background"
-  },
-  "faqBackgroundA": {
-    "message": "A: Go to the Options page (see above) and make sure you are on the Basics tab. Then, in the Background section, click Choose File.",
-    "description": "How to choose a background"
-  },
-  "faqAddWebClipQ": {
-    "message": "Q: How do I add a web page to my home screen?",
-    "description": "How to add a web clip"
-  },
-  "faqAddWebClipA": {
-    "message": "A: From most web pages, you can click the Launchpage icon on the right side of the address bar and click Add.",
-    "description": "How to add a web clip"
-  },
-  "faqNewFeaturesQ": {
-    "message": "Q: When will you add feature X?",
-    "description": "How to request features"
-  },
-  "faqNewFeaturesA": {
-    "message": "A: I am a student and cannot develop Launchpage full-time. However, I will add features on a priority basis. To request a feature, please contact me at https://chrome.google.com/webstore/support/bkdpdcgcbkkohcelcibdenakcngkmamg#feature",
-    "description": "How to request features"
-  },
-  "faqMoreHelpQ": {
-    "message": "Q: I still need help.",
-    "description": "How to contact for more help"
-  },
-  "faqMoreHelpA": {
-    "message": "A: You can contact me via https://chrome.google.com/webstore/support/bkdpdcgcbkkohcelcibdenakcngkmamg#question if you need more help, and I will try to respond in a timely manner.",
-    "description": "How to contact for more help"
   }
 }

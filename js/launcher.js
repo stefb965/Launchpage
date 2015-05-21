@@ -765,7 +765,7 @@ function offLine() {
   for (var i = 0; i < apps.length; i++) {
     if (!apps[i].offlineEnabled && apps[i].enabled) {
       //The app is not offline-enabled
-      $(icons[i]).css("opacity", "0.25");
+      $(icons[i]).css("opacity", "0.3");
     }
   }
 }
