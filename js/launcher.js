@@ -408,7 +408,8 @@ function dropIcon(dropTarget) {
 /**
  * Draws a context menu based on a target type.
  *
- * TODO: FUBAR; rewrite.
+ * @return
+ *        True if the context menu was drawn, otherwise false.
  */
 function drawContextMenu(event) {
   event.preventDefault();
@@ -419,21 +420,9 @@ function drawContextMenu(event) {
    * Determine the target element's type
    *************************************/
   var node = event.target;
-  var cancelDrawing = false; //Flag to cancel drawing the context menu
-  if (document.getElementById("context-menu")) { //If a context menu exists
-    if (node.id == "context-menu" || node.id == "arrow" ||
-        node.id == "arrow-overlay") { //If the target is the context menu itself
-      cancelDrawing = true;
-    }
-
-    while (!node.id && node != document) {
-      //Climb up the DOM tree until the node has an ID or the node is the root
-      node = node.parentNode;
-    }
-
-    if (node.id == "context-menu" || node.id == "arrow" ||
-        node.id == "arrow-overlay") { //If the target is in the context menu
-      cancelDrawing = true;
+  if ($(".context-menu")) { //If a context menu exists
+    if ($(node).parents(".popover").length > 0) { //If the target is the context menu itself
+      return false;
     }
   }
 
@@ -442,13 +431,7 @@ function drawContextMenu(event) {
     node = node.parentNode;
   }
 
-  if (node.className &&
-      (node.className.substring(0, 5) == "modal" ||
-      node.className.substring(0, 3) == "btn")) {
-    cancelDrawing = true;
-  }
-
-  if (cancelDrawing) {
+  if ($(node).is(".modal") || $(node).is(".btn")) {
     return false;
   }
 
@@ -463,6 +446,7 @@ function drawContextMenu(event) {
       var iconLi = $("<li role='menuitem'></li>");
       var iconA = $("<a href='#'></a>").text(node.innerText);
       iconA.on("click", function() {
+        console.log("Click");
         $(node).click();
       });
 
@@ -493,8 +477,6 @@ function drawContextMenu(event) {
             .on("click", function() {
               prompt(
                   chrome.i18n.getMessage("uninstallPageTitle", app.name),
-                  // app.name,
-                  // chrome.i18n.getMessage("uninstallApp", app.name),
                   undefined,
                   function() {
                     chrome.management.uninstall(
@@ -521,8 +503,6 @@ function drawContextMenu(event) {
             .on("click", function() {
               prompt(
                   chrome.i18n.getMessage("removePageTitle", app.name),
-                  // app.name,
-                  // chrome.i18n.getMessage("removeWebClipMessage", app.name),
                   undefined,
                   function() {
                     var index = getAppIndexById(app.id);
@@ -540,23 +520,34 @@ function drawContextMenu(event) {
       }
 
       $(node).popover({
+        animation: false,
         placement: "bottom",
+        trigger: "manual",
         html: true,
         content: function() {
           return contextMenuContainer.html();
         }
       });
       $(node).popover("show");
+      return true;
+      break;
+
+    default: //Anywhere except an icon (e.g. the background)
+      return false;
       break;
   }
-  return true;
 }
 
 /**
  * Destroys all visible context menus.
  */
 function destroyContextMenu() {
-  $(".icon").popover("destroy");
+  // Only destroy the popover if it wasn't triggered by an event or if the
+  // event target was not a context menu
+  if(!event ||
+      $(event.target).parents(".popover-content").length == 0) {
+    $(".icon").popover("destroy");
+  }
 }
 
 /**
@@ -574,6 +565,8 @@ function destroyContextMenu() {
  *        The URL of an icon to display. If undefined, the icon is hidden.
  */
 function prompt(titleText, text, buttonAction, buttonLabel, iconUrl) {
+  destroyContextMenu();
+
   $("#modal-title").text(titleText);
   if (text != undefined) {
     $("#modal-text").text(text).show();
