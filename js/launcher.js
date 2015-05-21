@@ -452,41 +452,129 @@ function drawContextMenu(event) {
     return false;
   }
 
-  var contextMenu = document.createElement("menu");
-  contextMenu.id = "context-menu";
-  contextMenu.type = "context";
-  contextMenu.setAttribute("role", "menu");
-  var arrow = document.createElement("div");
-  arrow.id = "arrow";
-  contextMenu.appendChild(arrow);
+  var contextMenu = $("<menu type='context' role='menu' class='dropdown-menu context-menu' id='context-menu'></menu>");
+  var contextMenuContainer = $("<div></div>").append(contextMenu);
   
   /****************
    * Build the menu
    ****************/
   switch (node.className) {
     case "icon": //If the node is an icon
-      var iconLi = document.createElement("li");
-      iconLi.setAttribute("role", "menuitem");
-      var iconA = document.createElement("a");
-      iconA.appendChild(document.createTextNode(node.innerText));
-      iconA.style.fontWeight = "bold";
-      iconA.href = node.href;
-      if (iconA.href.substring(0, 17) == "chrome://settings") {
-        iconA.addEventListener("click", function() {
-          chrome.tabs.update({url:"chrome://settings"});
-        }, false);
-      }
-      var optionsLi = document.createElement("li");
-      optionsLi.setAttribute("role", "menuitem");
-      var optionsA = document.createElement("a");
-      optionsA.appendChild(document.createTextNode(
-          chrome.i18n.getMessage("options")));
+      var iconLi = $("<li role='menuitem'></li>");
+      var iconA = $("<a href='#'></a>").text(node.innerText);
+      iconA.on("click", function() {
+        $(node).click();
+      });
+
+      iconLi.append(iconA);
+      contextMenu.append(iconLi);
+
+      // var iconLi = document.createElement("li");
+      // iconLi.setAttribute("role", "menuitem");
+      // var iconA = document.createElement("a");
+      // iconA.appendChild(document.createTextNode(node.innerText));
+      // iconA.style.fontWeight = "bold";
+      // iconA.href = node.href;
+      // if (iconA.href.substring(0, 17) == "chrome://settings") {
+      //   iconA.addEventListener("click", function() {
+      //     chrome.tabs.update({url:"chrome://settings"});
+      //   }, false);
+      // }
+
       var app = getAppById(node.id);
-      if (app.optionsUrl) {
-        optionsA.href = app.optionsUrl;
-      } else {
-        optionsLi.className = "disabled";
+
+      if (app.type == appTypes.hostedApp ||
+          app.type == appTypes.packagedApp ||
+          app.type == appTypes.legacyPackagedApp) {
+        contextMenu.append("<li role='presentation' class='divider'></li>");
+        if (app.optionsUrl) {
+          //The app has an options page
+          var optionsLi = $("<li role='menuitem'></li>");
+          var optionsA = $("<a></a>")
+            .attr("href", app.optionsUrl)
+            .text(chrome.i18n.getMessage("options"));
+
+          optionsLi.append(optionsA);
+          contextMenu.append(optionsLi);
+        }
+
+        if (app.mayDisable) {
+          var removeLi = $("<li role='menuitem'></li>");
+          var removeA = $("<a href='#'></a>")
+            .text(chrome.i18n.getMessage("remove", appName))
+            .on("click", function() {
+              prompt(
+                  chrome.i18n.getMessage("uninstallPageTitle", app.name),
+                  // app.name,
+                  // chrome.i18n.getMessage("uninstallApp", app.name),
+                  undefined,
+                  function() {
+                    chrome.management.uninstall(
+                        app.id,
+                        {
+                          showConfirmDialog: false
+                        },
+                        window.location.reload());
+                  },
+                  chrome.i18n.getMessage("buttonUninstall"),
+                  node.childNodes[0].src);
+            });
+
+          removeLi.append(removeA);
+          contextMenu.append(removeLi);
+        }
+      } else if (app.type == appTypes.webClip) {
+        contextMenu.append("<li role='presentation' class='divider'></li>");
+
+        if (app.mayDisable) {
+          var removeLi = $("<li role='menuitem'></li>");
+          var removeA = $("<a href='#'></a>")
+            .text(chrome.i18n.getMessage("removeWebClip", appName))
+            .on("click", function() {
+              prompt(
+                  chrome.i18n.getMessage("removePageTitle", app.name),
+                  // app.name,
+                  // chrome.i18n.getMessage("removeWebClipMessage", app.name),
+                  undefined,
+                  function() {
+                    var index = getAppIndexById(app.id);
+                    apps.splice(index, 1);
+                    localStorage["apps"] = JSON.stringify(apps);
+                    window.location.reload();
+                  },
+                  chrome.i18n.getMessage("buttonRemove"),
+                  node.childNodes[0].src);
+            });
+
+          removeLi.append(removeA);
+          contextMenu.append(removeLi);
+        }
       }
+
+      $(node).popover({
+        placement: "bottom",
+        html: true,
+        content: function() {
+          return contextMenuContainer.html();
+        }
+      });
+      $(node).popover("show");
+      // $("body").append(contextMenu);
+      // $(contextMenu).show();
+
+      // var optionsLi = document.createElement("li");
+      // optionsLi.setAttribute("role", "menuitem");
+      // var optionsA = document.createElement("a");
+      // optionsA.appendChild(document.createTextNode(
+      //     chrome.i18n.getMessage("options")));
+      // var app = getAppById(node.id);
+      // if (app.optionsUrl) {
+      //   optionsA.href = app.optionsUrl;
+      // } else {
+      //   optionsLi.className = "disabled";
+      // }
+
+/*
       var removeLi = document.createElement("li");
       removeLi.setAttribute("role", "menuitem");
       var removeA = document.createElement("a");
@@ -499,6 +587,7 @@ function drawContextMenu(event) {
         removeA.appendChild(document.createTextNode(
             chrome.i18n.getMessage("removeWebClip")));
       }
+
       if (app.mayDisable == true) {
         removeA.href = "#";
         removeA.addEventListener("click", function(){
@@ -556,7 +645,7 @@ function drawContextMenu(event) {
       if (removeLi.className != "disabled") {
         contextMenu.appendChild(removeLi);
       }
-
+*/
       break;
       
     default: //If the node isn't any of the above (e.g. the root element)
@@ -599,110 +688,6 @@ function drawContextMenu(event) {
 
       break;
   }
-  
-  //Enables the context menu to have its style calculated - necessary for
-  //position calculations
-  contextMenu.style.display = "block";
-  document.body.appendChild(contextMenu);
-  
-  /*********************************************
-   * Context menu & triangle metrics - calculate
-   * position to display menu & arrow
-   *********************************************/
-  switch (node.className) {
-    case "icon":
-    //if the target is an icon, display the context menu below the icon
-
-      var n = node.parentNode;
-
-      n.focus(); //Set the focus to the icon as visual feedback
-    
-      //Make the arrow display on top of the context menu
-      arrow.className = "top";
-    
-      //Center the context menu horizontally on the icon
-      contextMenu.style.left = n.offsetLeft - 11 +
-          (parseInt(getComputedStyle(n)["width"]) +
-           parseInt(getComputedStyle(n)["padding-left"]) +
-           parseInt(getComputedStyle(n)["padding-right"]) -
-           parseInt(getComputedStyle(contextMenu)["width"]))/2 + "px";
-          
-      //Position the context menu below the icon
-      contextMenu.style.top = n.offsetTop - 33 -
-          parseInt(getComputedStyle(arrow)["top"]) +
-          parseInt(getComputedStyle(n)["height"]) +
-          parseInt(getComputedStyle(n)["padding-top"]) +
-          parseInt(getComputedStyle(n)["padding-bottom"]) + "px";
-      
-      //Center the arrow horizontally on the menu
-      arrow.style.left =
-          (parseInt(getComputedStyle(contextMenu)["width"]) +
-           parseInt(getComputedStyle(contextMenu)["padding-left"]) +
-           parseInt(getComputedStyle(contextMenu)["padding-right"]))/2 +
-          parseInt(getComputedStyle(arrow)["top"]) + "px";
-      
-      if (parseInt(contextMenu.style.top) +
-          parseInt(getComputedStyle(contextMenu)["padding-top"]) +
-          parseInt(getComputedStyle(contextMenu)["padding-bottom"]) +
-          parseInt(getComputedStyle(contextMenu)["height"]) -
-          document.body.scrollTop > window.innerHeight) {
-          //if the context menu overflows the viewport vertically
-          
-            arrow.className = "bottom"; //Make the arrow show below the menu
-        
-            //Position the context menu above the icon
-            contextMenu.style.top = n.offsetTop +
-                parseInt(getComputedStyle(arrow)["bottom"]) -
-                parseInt(getComputedStyle(contextMenu)["height"]) -
-                parseInt(getComputedStyle(contextMenu)["padding-top"]) -
-                parseInt(getComputedStyle(contextMenu)["padding-bottom"]) +
-                "px";
-        }
-
-        break;
-    
-    default:
-    //if the target is not an icon, display the context menu with the arrow
-    //tip at the point clicked
-    
-      //Make the arrow display on the left side of the menu
-      arrow.className = "left";
-      //Center the arrow vertically on the first menu item
-      arrow.style.top =
-          (parseInt(getComputedStyle(
-               contextMenu.getElementsByTagName("li")[0])["height"]) +
-           2 * parseInt(getComputedStyle(arrow)["left"]) + 1)/2 +
-          parseInt(getComputedStyle(contextMenu)["padding-top"]) + "px";
-      
-      contextMenu.style.left = event.pageX -
-          parseInt(getComputedStyle(arrow)["left"]) - 1 + "px";
-      contextMenu.style.top = event.pageY +
-          parseInt(getComputedStyle(arrow)["left"]) -
-          parseInt(getComputedStyle(arrow)["top"]) + "px";
-    
-      if (parseInt(getComputedStyle(contextMenu)["left"]) +
-          parseInt(getComputedStyle(contextMenu)["width"]) >
-          window.innerWidth) {
-        //If the menu overflows the window horizontally, make the arrow
-        //display on the right side of the menu
-        arrow.className = "right";
-        //Center the arrow vertically on the first menu item
-        arrow.style.top =
-            (parseInt(getComputedStyle(
-                 contextMenu.getElementsByTagName("li")[0])["height"]) +
-             2 * parseInt(getComputedStyle(arrow)["right"]) + 2)/2 +
-            parseInt(getComputedStyle(contextMenu)["padding-top"]) + "px";
-        
-        contextMenu.style.left = event.pageX -
-            parseInt(getComputedStyle(contextMenu)["width"]) +
-            parseInt(getComputedStyle(arrow)["right"]) + "px";
-        contextMenu.style.top = event.pageY +
-            parseInt(getComputedStyle(arrow)["right"]) -
-            parseInt(getComputedStyle(arrow)["top"]) + "px";
-      }
-
-      break;
-  }
   return true;
 }
 
@@ -710,18 +695,7 @@ function drawContextMenu(event) {
  * Destroys all visible context menus.
  */
 function destroyContextMenu() {
-  if (document.getElementById("context-menu")) {
-    if (event.target == document.childNodes[1]) { //If it's the root element
-      document.body.removeChild(document.getElementById("context-menu"));
-      return true;
-    } else if (event.target.id != "context-menu" &&
-        event.target.parentNode.id != "context-menu" &&
-        event.target.parentNode.parentNode.id != "context-menu") {
-      document.body.removeChild(document.getElementById("context-menu"));
-      return true;
-    }
-  }
-  return false;
+  $(".icon").popover("destroy");
 }
 
 /**

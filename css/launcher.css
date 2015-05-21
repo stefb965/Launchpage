@@ -80,6 +80,22 @@ a, button, .btn {
   float: left;
 }
 
+.popover-content {
+  padding: 0 14px;
+}
+
+.context-menu {
+  position: static;
+  box-shadow: none;
+  display: block;
+}
+
+.context-menu > li:first-child > a {
+  font-weight: bold !important;
+}
+
+
+/*
 #context-menu {
   background: -webkit-linear-gradient(rgba(72, 72, 72, 0.9),rgba(0, 0, 0, 0.9));
   border-radius: 10px;
@@ -99,45 +115,6 @@ a, button, .btn {
 .light-bg #context-menu li.disabled {
   color: rgba(0, 0, 0, 0.25);
 }
-
-/* CSS arrow hack:
- * Hypotenuse border set to color, leg borders set to transparent. Creates a
- * right isoceles triangle.
- */
-#context-menu > #arrow {
-  height: 0;
-  position: absolute;
-  width: 0;
-}
-
-#context-menu > #arrow.top {
-  border-bottom: 12px solid rgba(72, 72, 72, 0.9);
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  top: -12px;
-}
-
-#context-menu > #arrow.bottom {
-  border-top: 12px solid rgba(0, 0, 0, 0.9);
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  bottom: -12px;
-}
-
-#context-menu > #arrow.left {
-  border-bottom: 12px solid transparent;
-  border-right: 12px solid rgba(59, 59, 59, 0.9);
-  border-top: 12px solid transparent;
-  left: -12px;
-}
-
-#context-menu > #arrow.right {
-  border-bottom: 12px solid transparent;
-  border-left: 12px solid rgba(59, 59, 59, 0.9);
-  border-top: 12px solid transparent;
-  right: -12px;
-}
-/*(end CSS arrow hack)*/
 
 #context-menu li {
   margin: 0;
@@ -173,3 +150,4 @@ a, button, .btn {
   text-decoration: none;
   text-overflow: ellipsis;
 }
+*/
