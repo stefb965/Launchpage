@@ -8,11 +8,11 @@ function findBestIcon(icons) {
     icons.sort(largerIcon);
     icon = icons[0].url;
   } else {
-    icon = 'screenshot';
+    icon = "screenshot";
   }
   chrome.extension.sendMessage({
-    to: 'add.js',
-    from: 'icon_finder.js',
+    to: "add.js",
+    from: "icon_finder.js",
     message: {
       description: desc,
       icon: icon,
@@ -43,32 +43,32 @@ function largerIcon(a, b) {
 }
 
 var title = document.title;
-var desc = '';
-var metas = document.getElementsByTagName('meta');
+var desc = "";
+var metas = document.getElementsByTagName("meta");
 for (var i = 0; i < metas.length; i++) { //Check for meta description
-  if (metas[i].name == 'description') {
+  if (metas[i].name == "description") {
     desc = metas[i].content;
-  } else if (metas[i].name == 'apple-mobile-web-app-title') {
+  } else if (metas[i].name == "apple-mobile-web-app-title") {
     title = metas[i].content;
   }
 }
-if (title == '') {
+if (title == "") {
   title = '(Untitled)';
 }
 chrome.extension.sendMessage({ //Send the title for display ASAP
-  to: 'add.js',
-  from: 'icon_finder.js',
+  to: "add.js",
+  from: "icon_finder.js",
   message: {title: title}
 });
 var numImgs = 0;
-var links = document.getElementsByTagName('link');
+var links = document.getElementsByTagName("link");
 var icons = [], obj = [];
 var imgs = []; //Stores icons to be checked
 var imgsChecked = 0;
 for (var i = 0; i < links.length; i++) {
-  if (links[i].rel.indexOf('icon') != -1 &&
-      links[i].rel.indexOf('shortcut') == -1 &&
-      links[i].href.indexOf('favicon.ico') == -1) {
+  if (links[i].rel.indexOf("icon") != -1 &&
+      links[i].rel.indexOf("shortcut") == -1 &&
+      links[i].href.indexOf("favicon.ico") == -1) {
       //Only find icons (Apple or Opera), but not favicons
     numImgs++;
     checkIcon(links[i].href, true);
@@ -100,21 +100,21 @@ function checkIcon(url, links) {
   imgs[imgs.length-1].id = (imgs.length-1).toString(); //Keep track of each img
 }
 function searchFiles() {
-  var baseURL = window.location.origin + '/';
-  var fileNames = ['apple-touch-icon.png',
-    'apple-touch-icon.png-precomposed',
-    'apple-touch-icon-144x144-precomposed.png',
-    'apple-touch-icon-144x144.png',
-    'apple-touch-icon-114x114-precomposed.png',
-    'apple-touch-icon-114x114.png',
-    'apple-touch-icon-72x72-precomposed.png',
-    'apple-touch-icon-72x72.png',
-    'apple-touch-icon-57x57-precomposed.png',
-    'apple-touch-icon-57x57.png']; //These are the filenames to look for
+  var baseURL = window.location.origin + "/";
+  var fileNames = ["apple-touch-icon.png",
+    "apple-touch-icon.png-precomposed",
+    "apple-touch-icon-144x144-precomposed.png",
+    "apple-touch-icon-144x144.png",
+    "apple-touch-icon-114x114-precomposed.png",
+    "apple-touch-icon-114x114.png",
+    "apple-touch-icon-72x72-precomposed.png",
+    "apple-touch-icon-72x72.png",
+    "apple-touch-icon-57x57-precomposed.png",
+    "apple-touch-icon-57x57.png"]; //These are the filenames to look for
   var i = 0;
   //Check to see if any Apple touch icons exist in the root of the domain
   var xhr = new XMLHttpRequest();
-  xhr.open('HEAD', baseURL + fileNames[i], true); //At this point, we just want
+  xhr.open("HEAD", baseURL + fileNames[i], true); //At this point, we just want
   xhr.onreadystatechange = function() {           //to know if it exists or not
     if (xhr.readyState == 4) {
       if (xhr.status == 200) {
@@ -125,7 +125,7 @@ function searchFiles() {
       //Move on to the next icon
       i++;
       if (i < fileNames.length) { //Are there more to check?
-        xhr.open('HEAD', baseURL + fileNames[i], true);
+        xhr.open("HEAD", baseURL + fileNames[i], true);
         xhr.send();
       } else {
         if (icons.length == 0 && imgsChecked >= numImgs) { //Still no icons
