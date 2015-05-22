@@ -420,8 +420,10 @@ function drawContextMenu(event) {
    * Determine the target element's type
    *************************************/
   var node = event.target;
-  if ($(".context-menu")) { //If a context menu exists
-    if ($(node).parents(".popover").length > 0) { //If the target is the context menu itself
+  if ($(".context-menu")) {
+    //A context menu exists
+    if ($(node).parents(".popover").length > 0) {
+      //The target is the context menu itself
       return false;
     }
   }
@@ -442,12 +444,15 @@ function drawContextMenu(event) {
    * Build the menu
    ****************/
   switch (node.className) {
-    case "icon": //If the node is an icon
+    case "icon":
+      //The node is an icon
       var iconLi = $("<li role='menuitem'></li>");
       var iconA = $("<a href='#'></a>").text(node.innerText);
+
       iconA.on("click", function() {
-        console.log("Click");
-        $(node).click();
+        console.log(node);
+        node.click();
+        $(node).popover("destroy");
       });
 
       iconLi.append(iconA);
@@ -488,6 +493,7 @@ function drawContextMenu(event) {
                   },
                   chrome.i18n.getMessage("buttonUninstall"),
                   node.childNodes[0].src);
+              $(node).popover("destroy");
             });
 
           removeLi.append(removeA);
@@ -512,6 +518,7 @@ function drawContextMenu(event) {
                   },
                   chrome.i18n.getMessage("buttonRemove"),
                   node.childNodes[0].src);
+              $(node).popover("destroy");
             });
 
           removeLi.append(removeA);
@@ -525,10 +532,12 @@ function drawContextMenu(event) {
         trigger: "manual",
         html: true,
         content: function() {
-          return contextMenuContainer.html();
+          return contextMenu;
         }
       });
+
       $(node).popover("show");
+
       return true;
       break;
 
