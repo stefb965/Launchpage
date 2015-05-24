@@ -647,38 +647,6 @@ function injectContentScript(tabId, changeInfo, tab) {
 }
 
 /**
- * Checks whether the page action should be shown for the given tab.
- *
- * @param tabId
- *        The ID of the tab to check
- * @param changeInfo
- *        An object representing the information about the tab's change event
- * @param tab
- *        An object representing information about the tab
- */
-function checkUrl(tabId, changeInfo, tab) {
-  if (localStorage["page-action"] == "true" &&
-      tab.url.substring(0, 34) != "https://chrome.google.com/webstore" &&
-      (tab.url.substring(0, 7) == "http://" ||
-      tab.url.substring(0, 8) == "https://")) { //If URL is valid
-    chrome.pageAction.show(tabId); //Show the page action
-  } else {
-    chrome.pageAction.hide(tabId);
-  }
-}
-
-/**
- * Displays the page action on all currently open tabs that match.
- */
-function setUpCurrentTabs() {
-  chrome.tabs.query({}, function(tabs) { //Get all tabs
-    for (var i = 0; i < tabs.length; i++) {
-      checkUrl(tabs[i].id, {}, tabs[i]);
-    }
-  });
-}
-
-/**
  * Adds a web clip to the launcher.
  *
  * @param details
@@ -712,11 +680,6 @@ function addToHomeScreen(details) {
 //Disabled because the infobar API is still experimental
 //chrome.tabs.onUpdated.addListener(injectContentScript);
 
-//Listen for tab updates so we can check the URL for the page action
-if (localStorage["page-action"] == "true") {
-  chrome.tabs.onUpdated.addListener(checkUrl); //Listen for tab updates
-}
-
 //Draw Launchpage context menu instead of the browser's
 document.addEventListener("contextmenu", drawContextMenu, false);
 
@@ -726,13 +689,7 @@ document.addEventListener("mousedown", destroyContextMenu, false);
 window.addEventListener("load", function(e) {
   //Append icons to the launcher
   launcher.appendChild(icons);
-  
-  //Check if a new cache is available on page load
-  window.applicationCache.addEventListener("updateready", function(e) {
-    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-      window.applicationCache.swapCache();
-    }
-  }, false);
+
   window.setTimeout(function() {
       console.log("Page load time:", 
           performance.timing.loadEventEnd - performance.timing.navigationStart,
