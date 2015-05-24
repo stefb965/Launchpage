@@ -54,7 +54,7 @@ function save(pref) {
     case "background":
       if (pref.id == "bg-default") {
         localStorage["background"] = "bg-default";
-        localStorage["background-dominant-color"] = '#000000';
+        localStorage["background-dominant-color"] = "#000000";
       } else {
         localStorage["background"] = "bg-custom";
         localStorage["background-image-url"] = pref.id;
@@ -66,7 +66,7 @@ function save(pref) {
       break;
     case "background-image":
       var file = event.target.files[0];
-      if (!file.type.match('image.*')) {
+      if (!file.type.match("image.*")) {
         alert("The file you selected is not an image. Please retry and select" +
           " an image file.");
         break;
@@ -79,7 +79,7 @@ function save(pref) {
     case "page-action":
       localStorage["page-action"] = pref.checked;
       chrome.extension.getBackgroundPage().setUpCurrentTabs();
-    break;
+      break;
   }
 }
 
@@ -118,7 +118,7 @@ function errorHandler(e) {
  *        The file to write
  */
 function writeFile(f) {
-  fs.root.getFile('backgrounds/' + f.name, {create: true, exclusive: false},
+  fs.root.getFile("backgrounds/" + f.name, {create: true, exclusive: false},
     function(fileEntry) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
@@ -155,7 +155,7 @@ function appendThumb(url) {
   mainDiv.setAttribute("aria-selected", "false");
   mainDiv.addEventListener("click", function(){setSelected(this)}, false);
   mainDiv.addEventListener("mouseover", function() {
-    this.childNodes[1].style.backgroundColor = '#fff';
+    this.childNodes[1].style.backgroundColor = "#fff";
   }, false);
   mainDiv.addEventListener("mouseout", function() {
     this.childNodes[1].style.backgroundColor = "transparent";
@@ -202,7 +202,7 @@ function removeThumb(element) {
 function setColors(img) {
 //Get palette & dominant color in background image
   var dominantColor = getDominantColor(document.getElementById(img));
-  localStorage["background-dominant-color"] = '[' + dominantColor + ']';
+  localStorage["background-dominant-color"] = "[" + dominantColor + "]";
   var palette = createPalette(document.getElementById(img), 5);
   var secondaryColor;
   for (var i = palette.length - 1; i >= 0; i--) { 
@@ -214,18 +214,18 @@ function setColors(img) {
       secondaryColor = palette[i];
     }
   }
-  localStorage["background-secondary-color"] = '[' + secondaryColor + ']';
+  localStorage["background-secondary-color"] = "[" + secondaryColor + "]";
   var colors = [adjustRGB(dominantColor, -30), adjustRGB(dominantColor, -20),
       adjustRGB(dominantColor, -28), adjustRGB(dominantColor, -70),
       adjustRGB(secondaryColor, 0)];
-  var paletteString = '[';
+  var paletteString = "[";
   for (var i = 0; i < colors.length; i++) {
     if (i > 0) {
-      paletteString += ',';
+      paletteString += ",";
     }
-    paletteString += '[' + colors[i] + ']';
+    paletteString += "[" + colors[i] + "]";
   }
-  paletteString += ']';
+  paletteString += "]";
   localStorage["background-colors"] =
       paletteString;
 }
@@ -313,8 +313,8 @@ document.getElementById("getHelpButton").addEventListener("click", function() {
 document.getElementById("reportProblemButton").addEventListener("click",
   function() {
     window.location.href =
-        'https://chrome.google.com/webstore/support/' +
-        launchpage.extensionInfo.id + '#bug';
+        "https://chrome.google.com/webstore/support/" +
+        launchpage.extensionInfo.id + "#bug";
   }, false);
 
 /*******************************************************************************

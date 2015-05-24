@@ -22,7 +22,8 @@
   "permissions": [
     "management",
     "tabs",
-    "<all_urls>",
+    "declarativeContent",
+    "activeTab",
     "storage",
     "unlimitedStorage"
   ],

@@ -849,10 +849,26 @@ if (localStorage["background"] == "bg-custom") {
   }
 }
 
-//Display page action on tabs
-setUpCurrentTabs(false);
-
 //Initiate settings
 if (!localStorage["background"]) localStorage["background"] = "bg-default";
 if (!localStorage["chameleon"]) localStorage["chameleon"] = "true";
 if (!localStorage["page-action"]) localStorage["page-action"] = "true";
+
+//Create a rule for when the page action should be displayed
+var rule = {
+  conditions: [
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        schemes: ["http", "https"]
+      }
+    })
+  ],
+  actions: [ new chrome.declarativeContent.ShowPageAction() ]
+};
+
+//Register the page action rule if the extension was just installed
+chrome.runtime.onInstalled.addListener(function(details) {
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+    chrome.declarativeContent.onPageChanged.addRules([rule]);
+  });
+});
