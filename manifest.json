@@ -21,7 +21,6 @@
   },
   "permissions": [
     "management",
-    "tabs",
     "declarativeContent",
     "activeTab",
     "storage",
