@@ -13,28 +13,36 @@
     <!-- Background -->
     <h5 i18n-content="optionsBackground"></h5>
     <div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="custom-bg" id="custom-bg" />
+          <span i18n-content="optionsCustomBackground" />
+        </label>
+      </div>
+    </div>
+    <div>
       <input type="file" name="background-image"
-          id="background-image" accept="image/*" />
+          id="background-image" accept="image/*" disabled="true" />
     </div>
     <div>
       <div class="checkbox">
         <label>
           <input type="checkbox" name="chameleon" id="chameleon"
-              checked="true" />
-          <span i18n-content="chameleonBackground" />
+              checked="true" disabled="true" />
+          <span i18n-content="optionsChameleonBackground" />
         </label>
       </div>
     </div>
 
 
-    <!-- Page Action -->
+    <!-- Add to Launchpage -->
     <h5 i18n-content="optionsPageAction"></h5>
     <div>
       <div class="checkbox">
         <label>
           <input type="checkbox" name="page-action" id="page-action"
               checked="checked" />
-          <span i18n-content="usePageAction" />
+          <span i18n-content="optionsUsePageAction" />
         </label>
       </div>
     </div>

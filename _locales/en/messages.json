@@ -113,22 +113,22 @@
   },
   "optionsBackground": {
     "message": "Background",
-    "description": "The Background section in the Options page"
+    "description": "The title of the background section in the Options page"
   },
-  "chameleonBackground": {
+  "optionsCustomBackground": {
+    "message": "Use custom background image",
+    "description": "Whether to use a custom background image or the default"
+  },
+  "optionsChameleonBackground": {
     "message": "Coordinate colors with background",
     "description": "Whether to change the color palette automatically"
   },
   "optionsPageAction": {
-    "message": "Page Action",
-    "description": "The Page Action section in the Options page"
+    "message": "Add to Launchpage",
+    "description": "The title of the page action section in the Options page"
   },
-  "usePageAction": {
-    "message": "Show icon to add to home screen",
+  "optionsUsePageAction": {
+    "message": "Show icon to add websites to Launchpage",
     "description": "Whether to display the page action in the address bar"
-  },
-  "optionDefault": {
-    "message": "Default",
-    "description": "The default option"
   }
 }

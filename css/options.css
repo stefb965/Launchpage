@@ -1,3 +1,25 @@
 body {
     margin: 20px;
+    -webkit-user-select: none;
+}
+
+/* Remove Chrome-injected default styles */
+input[type="checkbox"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"],
+input[type="checkbox"]:after,
+.checkbox input[type="checkbox"]:after,
+.checkbox-inline input[type="checkbox"]:after,
+input[type="checkbox"]:before,
+.checkbox input[type="checkbox"]:before,
+.checkbox-inline input[type="checkbox"]:before,
+input[type="checkbox"]:hover,
+.checkbox input[type="checkbox"]:hover,
+.checkbox-inline input[type="checkbox"]:hover {
+    background-image: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    margin: 0 5px;
 }

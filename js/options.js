@@ -2,7 +2,7 @@
  * Declare variables
  ******************************************************************************/
 var launchpage = chrome.extension.getBackgroundPage().launchpage;
-var fs, bgThumb;
+var fs, bgImg;
 
 /*******************************************************************************
  * Option functions
@@ -19,21 +19,6 @@ function loadPrefs(bgDir) {
     (localStorage["chameleon"] == "true");
   document.getElementById("page-action").checked =
     (localStorage["page-action"] == "true");
-  if (localStorage["background-image-url"]) {
-    //Display the saved background thumbnails
-    var dirReader = bgDir.createReader();
-    dirReader.readEntries(function(entries) {
-      for (var i = 0, entry; entry = entries[i]; ++i) {
-        if (entry.isFile) {
-          appendThumb(entry.toURL());
-          if (localStorage["background"] == "bg-custom" &&
-              localStorage["background-image-url"] == entry.toURL()) {
-            setSelected(document.getElementById(entry.toURL()));
-          }
-        }
-      }
-    }, errorHandler);
-  }
   
   var bg = document.getElementsByName("background");
   for (var i in bg) {
@@ -58,9 +43,9 @@ function save(pref) {
       } else {
         localStorage["background"] = "bg-custom";
         localStorage["background-image-url"] = pref.id;
-        bgThumb = pref.id;
+        bgImg = new Image(pref.id);
         window.setTimeout(function() {
-            setColors(bgThumb + "-thumb");
+            setColors(bgImg);
           }, 1000);
       }
       break;
@@ -124,8 +109,6 @@ function writeFile(f) {
         fileWriter.onwriteend = function(e) {
           localStorage["background"] = "bg-custom";
           localStorage["background-image-url"] = fileEntry.toURL();
-          appendThumb(fileEntry.toURL());
-          setSelected(document.getElementById(fileEntry.toURL()));
         };
         fileWriter.onerror = function(e) {
           console.error("Write failed: " + e.toString());
@@ -136,74 +119,15 @@ function writeFile(f) {
 }
 
 /**
- * Displays a thumbnail for an image in the grid.
- *
- * @param url
- *        The URL of the background image to display
- */
-function appendThumb(url) {
-  var mainDiv = document.createElement("div");
-  var secondDiv = document.createElement("div");
-  var bgImg = document.createElement("img");
-  var deleteButton = document.createElement("button");
-  
-  mainDiv.id = url;
-  mainDiv.name = "background";
-  mainDiv.className = "deletable-item";
-  mainDiv.setAttribute("role", "option");
-  mainDiv.lead = "lead";
-  mainDiv.setAttribute("aria-selected", "false");
-  mainDiv.addEventListener("click", function(){setSelected(this)}, false);
-  mainDiv.addEventListener("mouseover", function() {
-    this.childNodes[1].style.backgroundColor = "#fff";
-  }, false);
-  mainDiv.addEventListener("mouseout", function() {
-    this.childNodes[1].style.backgroundColor = "transparent";
-  }, false);
-  bgImg.src = url;
-  bgImg.className = "bg-thumb";
-  bgImg.id = url + "-thumb";
-  deleteButton.className = "raw-button row-delete-button custom-appearance";
-  deleteButton.addEventListener("click", function(){
-    removeThumb(this);
-    event.stopPropagation();
-  }, false);
-  
-  secondDiv.appendChild(bgImg);
-  mainDiv.appendChild(secondDiv);
-  mainDiv.appendChild(deleteButton);
-  document.getElementById("backgrounds-grid").appendChild(mainDiv);
-}
-
-/**
- * Removes the thumbnail from the grid.
- *
- * @param element
- *        The HTML element of the thumbnail to remove
- */
-function removeThumb(element) {
-  var thumbDiv = element.parentNode;
-  fs.root.getFile(decodeURI(thumbDiv.id.substring(74)), {create: false},
-    function (bgFile) {
-      bgFile.remove(function() {}, errorHandler);
-    }, errorHandler);
-  if (thumbDiv.getAttribute("selected") == "selected") {
-    setSelected(document.getElementById("bg-default"));
-  }
-  thumbDiv.parentNode.removeChild(thumbDiv);
-}
-
-/**
  * Detects and stores the primary color palette of the image.
  *
  * @param img
- *        The ID of the image to process
+ *        The image object to process
  */
 function setColors(img) {
-//Get palette & dominant color in background image
-  var dominantColor = getDominantColor(document.getElementById(img));
+  var dominantColor = getDominantColor(img);
   localStorage["background-dominant-color"] = "[" + dominantColor + "]";
-  var palette = createPalette(document.getElementById(img), 5);
+  var palette = createPalette(img, 5);
   var secondaryColor;
   for (var i = palette.length - 1; i >= 0; i--) { 
     var difference = [0, 0, 0];
@@ -228,27 +152,6 @@ function setColors(img) {
   paletteString += "]";
   localStorage["background-colors"] =
       paletteString;
-}
-
-/**
- * Selects the given background thumbnail.
- *
- * @param element
- *        The HTML element that was clicked
- */
-function setSelected(element) {
-  document.getElementById("bg-default").removeAttribute("selected");
-  document.getElementById("bg-default").setAttribute("aria-selected", "false");
-  var items = document.getElementsByClassName("deletable-item");
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].getAttribute("selected")) {
-      items[i].removeAttribute("selected");
-      items[i].setAttribute("aria-selected", "false");
-    }
-  }
-  element.setAttribute("selected", "selected");
-  element.setAttribute("aria-selected", "true");
-  save(element);
 }
 
 /**
@@ -296,49 +199,34 @@ function differenceRGB(rgb1, rgb2) {
 /*******************************************************************************
  * Event listeners
  ******************************************************************************/
-document.getElementById("background-image").addEventListener("change",
-  function() { save(this) }, false);
-document.getElementById("bg-default").addEventListener("click", function(){
-  setSelected(this);
-}, false);
-document.getElementById("chameleon").addEventListener("change", function() {
+
+$("#custom-bg").on("click", function(){
+  if (this.checked) {
+    $("#background-image, #chameleon").removeAttr("disabled");
+  } else {
+    $("#background-image, #chameleon").attr("disabled", "true");
+  }
+});
+
+$("#background-image").on("change", function() {
   save(this);
-}, false);
-document.getElementById("page-action").addEventListener("change", function() {
+});
+
+$("#chameleon").on("change", function() {
   save(this);
-}, false);
-document.getElementById("getHelpButton").addEventListener("click", function() {
-  window.open("help.html");
-}, false);
-document.getElementById("reportProblemButton").addEventListener("click",
-  function() {
-    window.location.href =
-        "https://chrome.google.com/webstore/support/" +
-        launchpage.extensionInfo.id + "#bug";
-  }, false);
+});
+
+$("#page-action").on("change", function() {
+  save(this);
+});
 
 /*******************************************************************************
  * Post scripts
  ******************************************************************************/
-//Webkit-specific requestFileSystem
-window.requestFileSystem = window.requestFileSystem ||
-    window.webkitRequestFileSystem;
 
-//FIXME: Don't know why this resets, as it is declared in the HTML, but whatever
-document.getElementById("bg-default").name = "background";
-
-//Display extension info in Help tab
-document.getElementById("version").innerText = chrome.i18n.getMessage(
-    "optionsVersion", launchpage.extensionInfo.version);
-document.getElementById("aboutIcon").src = 
-    launchpage.extensionInfo.icons[3].url;
-document.getElementById("copyright").innerText = chrome.i18n.getMessage(
-    "optionsCopyright", new Date().getFullYear().toString());
-
-//Filesystem directory writer adapted from http://www.html5rocks.com
-window.webkitStorageInfo.requestQuota(PERSISTENT, 1024*100, //100 MB
+navigator.webkitPersistentStorage.requestQuota (1024*100, //100 MB
   function(grantedBytes) {
-    window.requestFileSystem(PERSISTENT, grantedBytes, function(fsys) {
+    window.webkitRequestFileSystem(PERSISTENT, grantedBytes, function(fsys) {
       (function() {
         fs = fsys;
         fs.root.getDirectory(
