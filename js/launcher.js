@@ -748,51 +748,55 @@ if (localStorage["background"] == "bg-custom") {
 
 //Adjust the color palette based on the dominant color of the background
 if (localStorage["background"] == "bg-custom") {
-  var dominantColor = JSON.parse(localStorage["background-dominant-color"]);
+  var dominantColor = JSON.parse(localStorage["background-colors"])[0];
 
-  if (getLightness(dominantColor)[2] > 0.5) {
+  if (getLightness(dominantColor) > 0.5) {
     $("body").addClass("light-bg");
-    // document.styleSheets[0].addRule(".icon > label", "color: #000");
-    // document.styleSheets[0].addRule(".icon > label",
-    //     "text-shadow: #fff 0 0 10px, #fff 0 0 10px," +
-    //     "#fff 0 0 10px, #fff 0 0 10px, #fff 0 0 10px");
-    // if (localStorage["chameleon"] == "true") {
-    //   document.styleSheets[0].addRule("#context-menu", "color: #000");
-    //   document.styleSheets[0].addRule("#context-menu li.disabled",
-    //       "color: rgba(0, 0, 0, 0.25)");
-    // }
+    document.styleSheets[0].addRule(".icon > label", "color: #000");
+    document.styleSheets[0].addRule(".icon > label",
+        "text-shadow: #fff 0 0 10px, #fff 0 0 10px," +
+        "#fff 0 0 10px, #fff 0 0 10px, #fff 0 0 10px");
+    if (localStorage["chameleon"] == "true") {
+      document.styleSheets[0].addRule("#context-menu li > a", "color: #000");
+      document.styleSheets[0].addRule("#context-menu li.disabled",
+          "color: rgba(0, 0, 0, 0.25)");
+      document.styleSheets[0].addRule(".divider",
+          "background-color: rgba(0, 0, 0, 0.1) !important");
+    }
+  } else if (localStorage["chameleon"] == "true") {
+      document.styleSheets[0].addRule("#context-menu li > a", "color: #fff");
+      document.styleSheets[0].addRule("#context-menu li.disabled",
+          "color: rgba(255, 255, 255, 0.25)");
+      document.styleSheets[0].addRule(".divider",
+          "background-color: rgba(255, 255, 255, 0.1) !important");
   }
 
   if (localStorage["chameleon"] == "true") {
-    var secondaryColor = JSON.parse(localStorage["background-secondary-color"]);
-    var colors = JSON.parse(localStorage["background-colors"]);
-    var rgb = colors[0];
-    var rgbLight = colors[1];
-    var rgbMed = colors[2];
-    var rgbDark = colors[3];
-    var rgb2 = colors[4];
+    var palette = JSON.parse(localStorage["background-colors"]);
+
+    //Find a secondary color with enough contrast
+    var dominantColor = palette[0];
+    var secondaryColor;
+    for (var i = palette.length - 1; i >= 0; i--) { 
+      var difference = [0, 0, 0];
+      for (var j = 0; j < 3; j++) {
+        difference[j] = Math.abs(dominantColor[j] - palette[i][j]);
+      }
+      if (difference[0] > 50 || difference[1] > 50 || difference[2] > 50) {
+        secondaryColor = palette[i];
+      }
+    }
+
     document.styleSheets[0].addRule(".icon:hover, .icon:focus, .icon.hover",
-        "background: rgba(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ", 0.5)");
-    document.styleSheets[0].addRule("#context-menu",
-        "background: -webkit-linear-gradient(" +
-        "rgba("+rgbLight[0]+", "+rgbLight[1]+", "+rgbLight[2]+", 0.9),"+
-        "rgba("+rgbDark[0]+", "+rgbDark[1]+", "+rgbDark[2]+", 0.9))");
-    document.styleSheets[0].addRule("#context-menu > #arrow.top",
-        "border-bottom: 12px solid rgba(" + rgbLight[0] + ", "+
-            rgbLight[1] + ", " + rgbLight[2] + ", 0.9)");
-    document.styleSheets[0].addRule("#context-menu > #arrow.left",
-        "border-right: 12px solid rgba(" + rgbMed[0] + ", "+
-            rgbMed[1] + ", " + rgbMed[2] + ", 0.9)");
-    document.styleSheets[0].addRule("#context-menu > #arrow.right",
-        "border-left: 12px solid rgba(" + rgbMed[0] + ", "+
-            rgbMed[1] + ", " + rgbMed[2] + ", 0.9)");
-    document.styleSheets[0].addRule("#context-menu > #arrow.bottom",
-        "border-top: 12px solid rgba(" + rgbDark[0] + ", "+
-            rgbDark[1] + ", " + rgbDark[2] + ", 0.9)");
+        "background: rgba(" + dominantColor[0] + ", " + dominantColor[1] + ", " + dominantColor[2] + ", 0.5)");
+    document.styleSheets[0].addRule(".popover, #context-menu",
+        "background: rgba(" + dominantColor[0] + ", " + dominantColor[1] + ", " + dominantColor[2] + ", 1.0)");
+    document.styleSheets[0].addRule(".arrow:after",
+        "border-bottom-color: rgba(" + dominantColor[0] + ", " + dominantColor[1] + ", " + dominantColor[2] + ", 1.0) !important");
     document.styleSheets[0].addRule("#context-menu li:not(.disabled):hover > a," +
         "#context-menu li:not(.disabled) > a:focus",
-        "background:rgba(" + rgb2[0] + "," + rgb2[1] + "," + rgb2[2] + ", .75)");
-    if (getLightness(secondaryColor)[2] > 0.5) {
+        "background:rgba(" + secondaryColor[0] + "," + secondaryColor[1] + "," + secondaryColor[2] + ", .75)");
+    if (getLightness(secondaryColor) > 0.5) {
       document.styleSheets[0].addRule(
           "#context-menu li:not(.disabled):hover > a," +
           "#context-menu li:not(.disabled) > a:focus",
@@ -812,7 +816,7 @@ if (!localStorage["chameleon"]) localStorage["chameleon"] = "true";
 if (!localStorage["page-action"]) localStorage["page-action"] = "true";
 
 //Create a rule for when the page action should be displayed
-var rule = {
+var pageActionRule = {
   conditions: [
     new chrome.declarativeContent.PageStateMatcher({
       pageUrl: {
@@ -826,6 +830,6 @@ var rule = {
 //Register the page action rule if the extension was just installed
 chrome.runtime.onInstalled.addListener(function(details) {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    chrome.declarativeContent.onPageChanged.addRules([rule]);
+    chrome.declarativeContent.onPageChanged.addRules([pageActionRule]);
   });
 });

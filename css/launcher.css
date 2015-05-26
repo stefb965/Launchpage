@@ -80,6 +80,12 @@ a, button, .btn {
   float: left;
 }
 
+.popover {
+  padding: 0;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
 .popover-content {
   padding: 0;
 }

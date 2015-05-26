@@ -17,6 +17,7 @@ input[type="checkbox"]:hover,
 .checkbox input[type="checkbox"]:hover,
 .checkbox-inline input[type="checkbox"]:hover {
     background-image: none;
+    box-shadow: none;
 }
 
 input[type="checkbox"],
