@@ -18,6 +18,12 @@ a, button, .btn {
   outline: none !important;
 }
 
+.font-downloader {
+  font-family: "Roboto";
+  position: absolute;
+  visibility: hidden;
+}
+
 .icon-col {
   padding: 1.25%;
 }
