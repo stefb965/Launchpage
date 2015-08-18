@@ -10,7 +10,7 @@ var appName = (navigator.userAgent.indexOf("Chromium") == -1) ?
 chrome.extension.getBackgroundPage().isBackgroundPage = true; // Figure out if this is the background page
 icons.id = "icons";
 
-/* From http:// goo.gl/ebxrk */
+/* From http://goo.gl/ebxrk */
 Array.prototype.move = function (old_index, new_index) {
     if (new_index >= this.length) {
         var k = new_index - this.length;
@@ -101,7 +101,7 @@ function App(id, name, url) {
         appLaunchUrl: url,
         description: "",
         enabled: true,
-        homepageUrl: "https:// chrome.google.com/webstore/detail/" + id,
+        homepageUrl: "https://chrome.google.com/webstore/detail/" + id,
         hostPermissions: [],
         icons: [{
             size: 128,
@@ -159,9 +159,9 @@ function getApps(addons) {
                             navigator.appVersion.indexOf("Chrome/")));
     var webStore = new App("web-store",
             chrome.i18n.getMessage("iconWebStore"),
-            "https:// chrome.google.com/webstore?utm_source=launchpage");
+            "https://chrome.google.com/webstore?utm_source=launchpage");
     webStore.description = chrome.i18n.getMessage("iconWebStoreDescription");
-    chromePrefs.homepageUrl = "https:// chrome.google.com/webstore";
+    chromePrefs.homepageUrl = "https://chrome.google.com/webstore";
     webStore.icons[0].url = chrome.runtime.getURL("../icons/webstore.png");
     webStore.type = appTypes.stockApp;
     webStore.mayDisable = false;
@@ -251,9 +251,9 @@ function appendIcon(appObject) {
                     // "pinned": appObject.pinned
                     }, appLoaded);*/
         // }, false);
-    if (appObject.appLaunchUrl.substring(0, 17) == "chrome:// settings") {
+    if (appObject.appLaunchUrl.substring(0, 17) == "chrome://settings") {
         app.addEventListener("click", function() {
-            chrome.tabs.update({url: "chrome:// settings"});
+            chrome.tabs.update({url: "chrome://settings"});
         }, false);
     } else if (appObject.type == appTypes.packagedApp ||
                 appObject.type == appTypes.legacyPackagedApp) {
