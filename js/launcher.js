@@ -144,7 +144,7 @@ function getApps(addons) {
     }
         
     var chromePrefs = new App("chrome-prefs",
-            chrome.i18n.getMessage("iconSettings"), "chrome:// settings");
+            chrome.i18n.getMessage("iconSettings"), "chrome://settings");
     chromePrefs.description =
             chrome.i18n.getMessage("iconSettingsDescription", appName);
     chromePrefs.homepageUrl = "";
