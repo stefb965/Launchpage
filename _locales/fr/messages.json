@@ -7,18 +7,6 @@
     "message": "Un lanceur esthétiques d'applications de la page nouvel onglet",
     "description": "La description de l'extension"
   },
-  "infobarNoApps": {
-    "message": "Vous n'avez pas des applications. Cliquez sur l'icône Chrome Web Store ci-dessous pour télécharger des applications.",
-    "description": "Avertir à l'utilisateur qu'il n'ont pas les applications"
-  },
-  "infobarOffline": {
-    "message": "Vous êtes actuellement déconnecté de l'Internet. Apps qui fonctionnent sans accès à Internet ont été mis en évidence.",
-    "description": "Dites à l'utilisateur, ils sont hors ligne et pourquoi leurs applications en mode hors connexion sont mis en évidence"
-  },
-  "infobarClose": {
-    "message": "Fermer",
-    "description": "Laissez l'utilisateur ferme la barre d'informations"
-  },
   "iconSettings": {
     "message": "Paramètres",
     "description": "Le nom de l'icône Chrome Paramètres"
@@ -34,12 +22,12 @@
     }
   },
   "iconWebStore": {
-    "message": "Chrome Web Store",
-    "description": "Chrome Web Store icône"
+    "message": "Web Store",
+    "description": "Web Store icône"
   },
   "iconWebStoreDescription": {
     "message": "Découvrez des applications, jeux, extensions et thèmes exceptionnels pour Google Chrome.",
-    "description": "La description du Chrome Web Store icône"
+    "description": "La description du Web Store icône"
   },
   "buttonCancel": {
     "message": "Annuler",
@@ -50,11 +38,17 @@
     "description": "Bouton pour désinstaller une application"
   },
   "uninstallPageTitle": {
-    "message": "Confirmer la suppression",
-    "description": "Le titre de la boîte de dialogue Désinstaller"
+    "message": "Supprimer « $APP$ » ?",
+    "description": "Le titre de la boîte de dialogue Désinstaller",
+    "placeholders": {
+      "app": {
+        "content": "$1",
+        "example": "Angry Birds"
+      }
+    }
   },
   "uninstallApp": {
-    "message": "Déinstaller « $APP$ » ?",
+    "message": "Vraiment supprimer cette application?",
     "description": "Demandez à l'utilisateur de confirmer la désinstallation d'une application",
     "placeholders": {
       "app": {
@@ -78,11 +72,17 @@
     "description": "Bouton pour supprimer un clip web"
   },
   "removePageTitle": {
-    "message": "Confirmer la suppression",
-    "description": "Le titre de la boîte de dialogue Supprimer Web Clip"
+    "message": "Supprimer « $APP$ » ?",
+    "description": "Le titre de la boîte de dialogue Supprimer Web Clip",
+    "placeholders": {
+      "app": {
+        "content": "$1",
+        "example": "Launchpage - Chrome Web Store"
+      }
+    }
   },
   "removeWebClipMessage": {
-    "message": "Supprimer « $APP$ » ?",
+    "message": "Vraiment supprimer cette clip web?",
     "description": "Demandez à l'utilisateur de confirmer la suppression d'un clip web",
     "placeholders": {
       "app": {
@@ -100,12 +100,8 @@
     "description": "Bouton pour ajouter le site Web à l'écran d'accueil via l'action de page"
   },
   "addWebClipHeading": {
-    "message": "Ajouter à l'écran d'accueil",
+    "message": "Ajouter à Launchpage",
     "description": "Titre de l'action la page popup"
-  },
-  "addWebClipDescription": {
-    "message": "Une icône sera ajoutée à l'écran d'accueil pour un accès immédiat à ce site web.",
-    "description": "Description de l'action la page popup"
   },
   "manageExtensions": {
     "message": "Gérer les extensions...",
@@ -115,168 +111,24 @@
     "message": "Options",
     "description": "Le context menu item pour les options d'une application"
   },
-  "optionsSearchField": {
-    "message": "Rechercher",
-    "description": "L'espace réservé pour le champ de recherche sur la page Options"
-  },
-  "optionsBasics": {
-    "message": "Options de base",
-    "description": "L'onglet Général dans la page Options"
-  },
-  "optionsHelp": {
-    "message": "Aide",
-    "description": "L'onglet Aide dans la page Options"
-  },
-  "optionsGetHelp": {
-    "message": "Obtenir de l'aide",
-    "description": "La section Obtenir de l'aide dans la page Options"
-  },
-  "optionsHelpButton": {
-    "message": "Obtenir de l'aide sur l'utilisation de Launchpage",
-    "description": "Le bouton Aide dans la page Options"
-  },
-  "optionsReportProblem": {
-    "message": "Signaler un problème",
-    "description": "Le bouton Signaler un problème dans la page Options"
-  },
-  "optionsAbout": {
-    "message": "À propos",
-    "description": "La section À propos de Launchpage dans la page Options"
-  },
-  "optionsVersion": {
-    "message": "Version $VERSION$",
-    "description": "Le numéro de version dans la page Options",
-    "placeholders": {
-      "version": {
-        "content": "$1",
-        "example": "1.0"
-      }
-    }
-  },
-  "optionsCopyright": {
-    "message": "Copyright © $YEAR$ Alex Cordonnier. Tous droits réservés.",
-    "description": "L'avis de copyright dans la page Options",
-    "placeholders": {
-      "year": {
-        "content": "$1",
-        "example": "2012"
-      }
-    }
-  },
   "optionsBackground": {
     "message": "Fond d'écran",
     "description": "La section fond d'écran dans la page Options"
   },
-  "chameleonBackground": {
-    "message": "Changer les couleurs du thème sur la base de mon expérience",
+  "optionsCustomBackground": {
+    "message": "Utilisez l'image de fond personnalisée",
+    "description": "Faut-il utiliser une image de fond ou l'image par défaut"
+  },
+  "optionsChameleonBackground": {
+    "message": "Coordonner les couleurs avec un fond",
     "description": "Faut-il modifier la palette de couleurs automatiquement"
   },
   "optionsPageAction": {
-    "message": "Action de la page",
+    "message": "Ajouter à Launchpage",
     "description": "La section Action de page dans la page Options"
   },
-  "usePageAction": {
-    "message": "Afficher une icône dans la barre d'adresse afin que je puisse ajouter des pages à l'écran d'accueil",
+  "optionsUsePageAction": {
+    "message": "Afficher l'icône pour ajouter des sites web à Launchpage",
     "description": "Que ce soit pour afficher l'action de page dans la barre d'adresse"
-  },
-  "optionDefault": {
-    "message": "Défaut",
-    "description": "L'option par défaut"
-  },
-  "contributors": {
-    "message": "Contributeurs",
-    "description": "Le lien vers la liste des contributeurs"
-  },
-  "contribDevelopers": {
-    "message": "Développeurs",
-    "description": "Le titre de la liste contributeur de développeurs"
-  },
-  "contribTesters": {
-    "message": "Bêta-testeurs",
-    "description": "Le titre de la liste contributeur de bêta-testeurs"
-  },
-  "contribTranslators": {
-    "message": "Traducteurs",
-    "description": "Le titre de la liste contributeur de traducteurs"
-  },
-  "helpHeading": {
-    "message": "Aide de Launchpage",
-    "description": "Le titre de la page d'aide"
-  },
-  "faqHeading": {
-    "message": "Foire Aux Questions",
-    "description": "Le titre de la section FAQ sur la page d'aide"
-  },
-  "faqInstallQ": {
-    "message": "Q: Comment puis-j'installer Launchpage?",
-    "description": "Comment faire pour installer Launchpage"
-  },
-  "faqInstallA": {
-    "message": "A: Aller à https://chrome.google.com/webstore/detail/launchpage/bkdpdcgcbkkohcelcibdenakcngkmamg et cliquez sur Ajouter à Chrome pour installer Launchpage.",
-    "description": "Comment faire pour installer Launchpage"
-  },
-  "faqOpenQ": {
-    "message": "Q: Comment puis-je ouvrir Launchpage?",
-    "description": "Comment ouvrir Launchpage"
-  },
-  "faqOpenA": {
-    "message": "A: Il suffit d'ouvrir un nouvel onglet après avoir installé Launchpage, et votre écran d'accueil apparaîtra automatiquement.",
-    "description": "Comment ouvrir Launchpage"
-  },
-  "faqOpenAppQ": {
-    "message": "Q: Comment puis-je ouvrir une application?",
-    "description": "Comment faire pour ouvrir une application"
-  },
-  "faqOpenAppA": {
-    "message": "A: D'un nouvel onglet, cliquez sur l'icône de l'application que vous souhaitez ouvrir.",
-    "description": "Comment faire pour ouvrir une application"
-  },
-  "faqRearrangeQ": {
-    "message": "Q: Comment puis-réorganiser mes applications?",
-    "description": "Comment réorganiser les applications"
-  },
-  "faqRearrangeA": {
-    "message": "A: D'un nouvel onglet, maintenez enfoncé le bouton de la souris et faites glisser l'application que vous souhaitez déplacer sur une autre application.",
-    "description": "Comment réorganiser les applications"
-  },
-  "faqOptionsQ": {
-    "message": "Q: Comment puis-je définir des options Launchpage?",
-    "description": "Comment définir les options"
-  },
-  "faqOptionsA": {
-    "message": "A: D'un nouvel onglet, faites un clic droit sur n'importe quel espace vide et cliquez sur Options.",
-    "description": "Comment définir les options"
-  },
-  "faqBackgroundQ": {
-    "message": "Q: Comment puis-je changer le fond d'écran?",
-    "description": "Comment choisir un arrière-plan"
-  },
-  "faqBackgroundA": {
-    "message": "A: Aller à la page Options (voir ci-dessus) et assurez-vous que vous êtes dans l'onglet Général puis, dans la section Contexte, cliquez sur Choisissez un fichier.",
-    "description": "Comment choisir un arrière-plan"
-  },
-  "faqAddWebClipQ": {
-    "message": "Q: Comment puis-je ajouter une page Web à l'écran d'accueil?",
-    "description": "Comment ajouter un clip web"
-  },
-  "faqAddWebClipA": {
-    "message": "A: De la plupart des pages Web, vous pouvez cliquer sur l'icône Launchpage sur le côté droit de la barre d'adresse et cliquez sur Ajouter.",
-    "description": "Comment ajouter un clip web"
-  },
-  "faqNewFeaturesQ": {
-    "message": "Q: Quand vous ajoutez la caractéristique « X » ?",
-    "description": "Comment faire pour demander des fonctions"
-  },
-  "faqNewFeaturesA": {
-    "message": "A: Je suis un étudiant et ne peut se développer Launchpage à temps plein. Cependant, je vais ajouter des fonctionnalités sur une base prioritaire. Pour demander une fonctionnalité, s'il vous plaît me contacter à https://chrome.google.com/webstore/support/bkdpdcgcbkkohcelcibdenakcngkmamg#feature",
-    "description": "Comment faire pour demander des fonctions"
-  },
-  "faqMoreHelpQ": {
-    "message": "Q: J'ai encore besoin d'aide.",
-    "description": "Comment contacter pour plus d'aide"
-  },
-  "faqMoreHelpA": {
-    "message": "A: Vous pouvez me contacter via https://chrome.google.com/webstore/support/bkdpdcgcbkkohcelcibdenakcngkmamg#question de savoir si vous avez besoin de plus d'aide, et je vais essayer de répondre en temps opportun.",
-    "description": "Comment contacter pour plus d'aide"
   }
 }

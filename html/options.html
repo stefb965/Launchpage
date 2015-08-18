@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title i18n-content="options">Options</title>
+    <link rel="stylesheet" href="../lib/bootstrap-paper.min.css">
+    <link rel="stylesheet" href="../css/options.css" />
+  </head>
+
+  <body>
+
+    <!-- Background -->
+    <h5 i18n-content="optionsBackground"></h5>
+    <div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="background" id="background"
+              checked="false" />
+          <span i18n-content="optionsCustomBackground" />
+        </label>
+      </div>
+    </div>
+    <div>
+      <input type="file" name="background-image"
+          id="background-image" accept="image/*" disabled="true" />
+    </div>
+    <div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="chameleon" id="chameleon"
+              checked="true" disabled="true" />
+          <span i18n-content="optionsChameleonBackground" />
+        </label>
+      </div>
+    </div>
+
+
+    <!-- Add to Launchpage -->
+    <h5 i18n-content="optionsPageAction"></h5>
+    <div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="page-action" id="page-action"
+              checked="true" />
+          <span i18n-content="optionsUsePageAction" />
+        </label>
+      </div>
+    </div>
+
+  </body>
+
+  <script src="../lib/color-thief.min.js"></script>
+  <script src="../lib/jquery-2.1.4.min.js"></script>
+  <script src="../lib/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/options.js"></script>
+</html>

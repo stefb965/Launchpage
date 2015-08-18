@@ -1,6 +1,6 @@
 {
-  "chameleonBackground": {
-    "message": "Change the theme colours based on my background",
-    "description": "Whether to change the color palette automatically"
+  "optionsChameleonBackground": {
+    "message": "Coordinate colours with background",
+    "description": "Whether to change the colour palette automatically"
   }
 }
