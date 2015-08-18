@@ -24,6 +24,10 @@ a, button, .btn {
   visibility: hidden;
 }
 
+#launcher.offline .icon.not-offline-enabled {
+  opacity: 0.3;
+}
+
 .icon-col {
   padding: 1.25%;
 }
